@@ -1686,3 +1686,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerJoinedText: {fileID: 79126070230811400}
   lobbyManager: {fileID: 0}
+  sessionDataPrefab: {fileID: 4088103415896197896, guid: ed068084a3fb5fd40b6e021ae63ff4dd, type: 3}
+  sessionParent: {fileID: 8760765564646479843}

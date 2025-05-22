@@ -16,10 +16,14 @@ public class UIManager : MonoBehaviour
 
     private List<SessionData> currentSessions = new List<SessionData>();
 
-
-    public void PlayerConnected(PlayerRef player)
+    void Start()
     {
-        playerJoinedText.SetText($"Player: {player.PlayerId} Joined the lobby");
+        lobbyManager.onSessionListUpdated += UpdateSessionList;
+        lobbyManager.onPlayersListChanged += PlayerConnection;
+    }
+    public void PlayerConnection(PlayerRef player, bool Joined)
+    {
+        playerJoinedText.SetText($"Player: {player.PlayerId} {(Joined ? "Joined" : "Left")} the lobby");
     }
 
     public void UpdateSessionList(List<SessionInfo> sessions)
