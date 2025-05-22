@@ -52,4 +52,10 @@ public class LobbyManager : LobbyManagerBase
     public override void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
     }
+
+    public void EndSession() {
+        if (networkRunner.IsRunning) {
+            networkRunner.Shutdown();
+        }
+    }
 }
