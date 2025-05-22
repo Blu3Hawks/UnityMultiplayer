@@ -15,19 +15,20 @@ public class LobbyManager : LobbyManagerBase
     // Session list
     private List<SessionInfo> _sessionsList = new();
 
-    public void StartSession()
+    public void StartSession(string sessionName)
     {
         networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = "MyGameSession",
-            OnGameStarted = OnGameStarted
+            SessionName = sessionName,
+            OnGameStarted = OnGameStarted,
+            CustomLobbyName = networkRunner.LobbyInfo.Name
         });
     }
 
     private void OnGameStarted(NetworkRunner obj)
     {
-        Debug.Log("Game Started");
+        Debug.Log("Game Started + Chen HaHomo");
     }
     
     public async void JoinLobby(string input)
