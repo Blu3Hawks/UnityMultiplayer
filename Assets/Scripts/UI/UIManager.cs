@@ -35,11 +35,16 @@ public class UIManager : MonoBehaviour
                 SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
                 newSession.InitializeLobby(sessions[i]);
                 currentSessions.Add(newSession);
+                newSession.OnSessionSelected += SessionSelected;
             }
             else
             {
                 currentSessions[i].InitializeLobby(sessions[i]);
             }
         }
+    }
+
+    private void SessionSelected(SessionInfo session) {
+        
     }
 }
