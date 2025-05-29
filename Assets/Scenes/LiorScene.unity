@@ -634,7 +634,7 @@ PrefabInstance:
       value: MultiplayerUI
       objectReference: {fileID: 0}
     - target: {fileID: 1049898319262330611, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 54211740}
     - target: {fileID: 1196706914433734735, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
@@ -716,6 +716,30 @@ PrefabInstance:
     - target: {fileID: 1196706914433734735, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4937971014929178455, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7615255532988337126, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686670323830611910, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 54211740}
+    - target: {fileID: 7686670323830611910, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: JoinLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686670323830611910, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LobbyManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686670323830611910, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8234466508409368516, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

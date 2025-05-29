@@ -34,6 +34,7 @@ public class LobbyManager : LobbyManagerBase
     public void StartSession()
     {
         Debug.Log(lobbyName.text);
+        amountOfPlayers = 0;
         networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
@@ -59,6 +60,8 @@ public class LobbyManager : LobbyManagerBase
         amountOfPlayers++;
 
         onSessionListUpdated?.Invoke(_sessionsList);
+        Debug.Log(amountOfPlayers);
+
     }
 
     public async void JoinLobby()
@@ -76,7 +79,6 @@ public class LobbyManager : LobbyManagerBase
     public override void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         _sessionsList = sessionList;
-
         onSessionListUpdated?.Invoke(_sessionsList);
     }
 
@@ -84,12 +86,15 @@ public class LobbyManager : LobbyManagerBase
     {
         amountOfPlayers++;
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
+        Debug.Log(amountOfPlayers);
     }
 
     public override void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
+        Debug.Log(amountOfPlayers);
+
     }
 
     public override void OnSceneLoadDone(NetworkRunner runner)
