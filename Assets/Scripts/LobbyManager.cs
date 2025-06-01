@@ -15,9 +15,7 @@ public class LobbyManager : LobbyManagerBase
     [SerializeField] private GameObject readyManagerGeneric;
     [SerializeField] private TextMeshProUGUI lobbyName;
 
-    [Header("UI References")]
-    [SerializeField] private GameObject lobbyUI;
-    [SerializeField] private GameObject generalUI;
+
 
     public ReadyManager readyManagerInstance;
 
