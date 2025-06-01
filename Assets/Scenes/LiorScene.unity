@@ -151,6 +151,8 @@ MonoBehaviour:
   networkRunner: {fileID: 1951274515}
   readyManagerGeneric: {fileID: 3032366310798394172, guid: 20c249e7e0d62c44b99b549bc8baf52e, type: 3}
   lobbyName: {fileID: 1273213472}
+  lobbyUI: {fileID: 719486796}
+  generalUI: {fileID: 0}
   readyManagerInstance: {fileID: 0}
 --- !u!4 &54211741
 Transform:
@@ -167,6 +169,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &199722101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 952387420083478546, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+  m_PrefabInstance: {fileID: 1013683978036894574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +432,11 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &719486796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6278668157531315799, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+  m_PrefabInstance: {fileID: 1013683978036894574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +497,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1435415516 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8900465372545140611, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+  m_PrefabInstance: {fileID: 1013683978036894574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1555857317
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +738,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6278668157531315799, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7615255532988337126, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -746,9 +767,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 54211740}
     - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: lobbyUI
+      value: 
+      objectReference: {fileID: 719486796}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: generalUI
+      value: 
+      objectReference: {fileID: 199722101}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: lobbyManager
       value: 
       objectReference: {fileID: 54211740}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: activeSessionUI
+      value: 
+      objectReference: {fileID: 719486796}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: createSessionUI
+      value: 
+      objectReference: {fileID: 1435415516}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -16,13 +16,11 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private RectTransform sessionParent;
 
-    private List<SessionData> currentSessions = new List<SessionData>();
+    [Header("UI References")]
+    [SerializeField] private GameObject activeSessionUI;
+    [SerializeField] private GameObject createSessionUI;
 
-    void Start()
-    {
-        lobbyManager.onSessionListUpdated += UpdateSessionList;
-        lobbyManager.onPlayersListChanged += PlayerConnection;
-    }
+    private List<SessionData> currentSessions = new List<SessionData>();
 
     public void PlayerConnection(PlayerRef player, bool Joined)
     {
@@ -36,6 +34,13 @@ public class UIManager : MonoBehaviour
         playerJoinedText.SetText("");
         
     }
+
+    private void OnSessionStart(List<SessionInfo> sessionInfo)
+    {
+        createSessionUI.SetActive(false);
+        activeSessionUI.SetActive(true);
+    }
+
 
     private void UpdateUI()
     {
@@ -65,4 +70,20 @@ public class UIManager : MonoBehaviour
     {
 
     }
+
+
+    private void OnEnable()
+    {
+        lobbyManager.onSessionListUpdated += UpdateSessionList;
+        lobbyManager.onPlayersListChanged += PlayerConnection;
+        lobbyManager.onSessionListUpdated += OnSessionStart;
+        UpdateUI();
+    }
+
+    private void OnDisable()
+    {
+        lobbyManager.onSessionListUpdated -= UpdateSessionList;
+        lobbyManager.onPlayersListChanged -= PlayerConnection;
+    }
+
 }
