@@ -26,12 +26,12 @@ public class UIManager : MonoBehaviour
     {
         playerJoinedText.SetText($"Player: {player.PlayerId} {(Joined ? "Joined" : "Left")} the lobby");
         UpdateUI();
-        float timer = 0;
-        while (timer < 1) 
-        {
-            timer += Time.deltaTime;
-        }
-        playerJoinedText.SetText("");
+        // float timer = 0;
+        // while (timer < 1) 
+        // {
+        //     timer += Time.deltaTime;
+        // }
+        // playerJoinedText.SetText("");
         
     }
 
@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
     public void UpdateSessionList(List<SessionInfo> sessions)
     {
         UpdateUI();
+        Debug.Log($"Session count: {sessions.Count}");
         for (int i = 0; i < sessions.Count; i++)
         {
             if (i < currentSessions.Count)

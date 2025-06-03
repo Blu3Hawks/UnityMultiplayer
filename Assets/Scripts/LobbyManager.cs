@@ -25,7 +25,7 @@ public class LobbyManager : LobbyManagerBase
     //private variables
     private int amountOfPlayers;
     //properties
-    public int AmountOfPlayers { get { return amountOfPlayers; } }
+    public int AmountOfPlayers { get { return  networkRunner.SessionInfo.PlayerCount; } }
 
     //scene const names
     public const string GAME_SCENE_NAME = "MyLobby";
@@ -33,19 +33,21 @@ public class LobbyManager : LobbyManagerBase
     //static reference
     public static LobbyManager Instance { get; private set; }
 
-    public void StartSession()
+    public async void StartSession()
     {
         Debug.Log(lobbyName.text);
-        amountOfPlayers = 0;
-        networkRunner.StartGame(new StartGameArgs
+        var result = await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
             SessionName = lobbyName.text,
             OnGameStarted = OnGameStarted,
-            CustomLobbyName = networkRunner.LobbyInfo.Name
         });
 
         onSessionListUpdated?.Invoke(_sessionsList);
+    }
+    void Awake()
+    {
+        networkRunner.AddCallbacks(this);
     }
 
     public void StartMatch()
@@ -68,7 +70,7 @@ public class LobbyManager : LobbyManagerBase
 
     public async void JoinLobby()
     {
-        var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, lobbyName.text);
+        var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, networkRunner.SessionInfo.Name);
         Debug.Log(lobbyName.text);
 
         if (result.Ok)
@@ -86,9 +88,9 @@ public class LobbyManager : LobbyManagerBase
 
     public override void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        amountOfPlayers++;
+        amountOfPlayers = runner.SessionInfo.PlayerCount;
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
-        Debug.Log(amountOfPlayers);
+        Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
 
     public override void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
