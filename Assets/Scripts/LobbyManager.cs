@@ -18,8 +18,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private GameObject readyManagerGeneric;
     [SerializeField] private TextMeshProUGUI lobbyName;
     [SerializeField] private Button startGameButton;
-
-
+    //need to add an int of max players to the lobby, so that it can be set through the UI
+    [SerializeField] private TMP_Dropdown amountOfPlayersDropdown;
 
     public ReadyManager readyManagerInstance;
 
@@ -28,8 +28,10 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     //private variables
     private int amountOfPlayers;
+    private int maxAmountOfPlayers = 2;
     //properties
     public int AmountOfPlayers { get { return networkRunner.SessionInfo.PlayerCount; } }
+    public int MaxAmountOfPlayers { get { return maxAmountOfPlayers; } }
 
     //scene const names
     public const string GAME_SCENE_NAME = "MyLobby";
@@ -39,7 +41,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void StartSession()
     {
-        Debug.Log(lobbyName.text);
+        //Debug.Log(lobbyName.text);
         var result = await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
@@ -62,13 +64,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     private void OnGameStarted(NetworkRunner obj)
     {
-        Debug.Log("Game Started + Chen HaHomo");
+        // Debug.Log("Game Started + Chen HaHomo");
         if (networkRunner.IsSharedModeMasterClient)
             networkRunner.Spawn(readyManagerGeneric);
         amountOfPlayers++;
 
         onSessionListUpdated?.Invoke(_sessionsList);
-        Debug.Log(amountOfPlayers);
+        //Debug.Log(amountOfPlayers);
 
         startGameButton.interactable = false;
         if (networkRunner.IsSceneAuthority)
@@ -97,14 +99,14 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         onSessionListUpdated?.Invoke(_sessionsList);
     }
 
-    public  void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
-        Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
+        //Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
 
-    public  void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
@@ -112,6 +114,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
+    public void SetMaxAmountOfPlayers()
+    {
+        maxAmountOfPlayers = amountOfPlayersDropdown.value + 2;
+        Debug.Log(maxAmountOfPlayers);
+    }
     public void OnSceneLoadDone(NetworkRunner runner)
     {
 
@@ -132,71 +139,71 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-      
+
     }
 
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-        
+
     }
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-       
+
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
     {
-     
+
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
     {
-      
+
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
-      
+
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
     {
-     
+
     }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
     {
-        
+
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
     {
-       
+
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-      
+
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
-    
+
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
     {
-    
+
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
     {
-        
+
     }
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
     {
-       
+
     }
 }

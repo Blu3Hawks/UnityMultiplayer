@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         //     timer += Time.deltaTime;
         // }
         // playerJoinedText.SetText("");
-        
+
     }
 
     private void OnSessionStart(List<SessionInfo> sessionInfo)
@@ -44,13 +44,14 @@ public class UIManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers}");
+        Debug.Log(lobbyManager.MaxAmountOfPlayers);
+        amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers} / {lobbyManager.MaxAmountOfPlayers}");
     }
 
     public void UpdateSessionList(List<SessionInfo> sessions)
     {
         UpdateUI();
-        Debug.Log($"Session count: {sessions.Count}");
+        //Debug.Log($"Session count: {sessions.Count}");
         for (int i = 0; i < sessions.Count; i++)
         {
             if (i < currentSessions.Count)

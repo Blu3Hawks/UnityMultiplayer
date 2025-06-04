@@ -9,7 +9,7 @@ public class ReadyManager : NetworkBehaviour
     [Rpc]
     public void SetReadyRPC(RpcInfo info = default)
     {
-        Console.WriteLine("SetReadyRPC called by " + info.Source.PlayerId   );
+        Console.WriteLine("SetReadyRPC called by " + info.Source.PlayerId);
         readyCounter++;
     }
 
