@@ -13,6 +13,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public event UnityAction<List<SessionInfo>> onSessionListUpdated;
     public event UnityAction<PlayerRef, bool> onPlayersListChanged;
 
+    public event UnityAction OnLobbyEntered;
+
+    public event UnityAction OnSessionStarted;
+
+
     [Header("References")]
     [SerializeField] private NetworkRunner networkRunner;
     [SerializeField] private GameObject readyManagerGeneric;
@@ -29,6 +34,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     //private variables
     private int amountOfPlayers;
     private int maxAmountOfPlayers = 2;
+
+    private string currentLobby;
     //properties
     public int AmountOfPlayers { get { return networkRunner.SessionInfo.PlayerCount; } }
     public int MaxAmountOfPlayers { get { return maxAmountOfPlayers; } }
@@ -47,9 +54,9 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             GameMode = GameMode.Shared,
             SessionName = lobbyName.text,
             OnGameStarted = OnGameStarted,
+            CustomLobbyName = currentLobby
         });
-
-        onSessionListUpdated?.Invoke(_sessionsList);
+        OnSessionStarted?.Invoke();
     }
     void Awake()
     {
@@ -81,9 +88,10 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public async void JoinLobby()
+    public async void JoinLobby(string LobbyID)
     {
-        var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, networkRunner.SessionInfo.Name);
+        currentLobby = LobbyID;
+        var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, LobbyID);
         Debug.Log(lobbyName.text);
         if (amountOfPlayers >= MaxAmountOfPlayers)
         {
@@ -94,6 +102,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         if (result.Ok)
         {
             Debug.Log("Lobby Joined Successfully");
+            OnLobbyEntered?.Invoke();
 
         }
     }
@@ -101,6 +110,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         _sessionsList = sessionList;
+        Debug.Log($"Session count: {_sessionsList.Count}");
         onSessionListUpdated?.Invoke(_sessionsList);
     }
 

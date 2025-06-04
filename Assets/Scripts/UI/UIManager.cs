@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject activeSessionUI;
     [SerializeField] private GameObject createSessionUI;
 
+    [SerializeField] private GameObject lobbyUI;
+
     private List<SessionData> currentSessions = new List<SessionData>();
 
     public void PlayerConnection(PlayerRef player, bool Joined)
@@ -35,10 +37,16 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void OnSessionStart(List<SessionInfo> sessionInfo)
+    private void OnLobbyJoined()
     {
-        createSessionUI.SetActive(false);
+        createSessionUI.SetActive(true);
+        lobbyUI.SetActive(false);
+    }
+    private void OnSessionStart()
+    {
         activeSessionUI.SetActive(true);
+        createSessionUI.SetActive(false);
+        lobbyUI.SetActive(false);
     }
 
 
@@ -51,7 +59,7 @@ public class UIManager : MonoBehaviour
     public void UpdateSessionList(List<SessionInfo> sessions)
     {
         UpdateUI();
-        //Debug.Log($"Session count: {sessions.Count}");
+        Debug.Log($"Session count in ui manager: {sessions.Count}");
         for (int i = 0; i < sessions.Count; i++)
         {
             if (i < currentSessions.Count)
@@ -78,7 +86,8 @@ public class UIManager : MonoBehaviour
     {
         lobbyManager.onSessionListUpdated += UpdateSessionList;
         lobbyManager.onPlayersListChanged += PlayerConnection;
-        lobbyManager.onSessionListUpdated += OnSessionStart;
+        lobbyManager.OnLobbyEntered += OnLobbyJoined;
+        lobbyManager.OnSessionStarted += OnSessionStart;
         UpdateUI();
     }
 
