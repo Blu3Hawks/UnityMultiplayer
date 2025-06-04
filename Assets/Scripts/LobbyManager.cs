@@ -85,6 +85,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, networkRunner.SessionInfo.Name);
         Debug.Log(lobbyName.text);
+        if (amountOfPlayers >= MaxAmountOfPlayers)
+        {
+            Debug.Log("Can't join the lobby, no space");
+            return;
+        }
 
         if (result.Ok)
         {
