@@ -12,6 +12,11 @@ public class SessionData : MonoBehaviour
     public event UnityAction<SessionInfo> OnSessionSelected;
 
     private SessionInfo current;
+
+    public SessionInfo CurrentSessionInfo => current;
+
+
+
     public void InitializeLobby(SessionInfo session)
     {
         current = session;

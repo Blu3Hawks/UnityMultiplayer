@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject activeSessionUI;
     [SerializeField] private GameObject createSessionUI;
-
     [SerializeField] private GameObject lobbyUI;
+
 
     private List<SessionData> currentSessions = new List<SessionData>();
 
@@ -49,6 +49,11 @@ public class UIManager : MonoBehaviour
         lobbyUI.SetActive(false);
     }
 
+    private void OnSessionShutDown()
+    {
+        activeSessionUI.SetActive(false);
+        createSessionUI.SetActive(true);
+    }
 
     private void UpdateUI()
     {
@@ -62,7 +67,7 @@ public class UIManager : MonoBehaviour
         Debug.Log($"Session count in ui manager: {sessions.Count}");
         for (int i = 0; i < sessions.Count; i++)
         {
-            if (i < currentSessions.Count)
+            if (i >= currentSessions.Count)
             {
                 SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
                 newSession.InitializeLobby(sessions[i]);
@@ -74,16 +79,22 @@ public class UIManager : MonoBehaviour
                 currentSessions[i].InitializeLobby(sessions[i]);
             }
         }
+
+        for (int i = sessions.Count; i < currentSessions.Count; i++)
+        {
+            Destroy(currentSessions[i].gameObject);
+        }
     }
 
     private void SessionSelected(SessionInfo session)
     {
-
+        lobbyManager.StartSession(session.Name);
     }
 
 
     private void OnEnable()
     {
+        lobbyManager.onSessionShutdown += OnSessionShutDown;
         lobbyManager.onSessionListUpdated += UpdateSessionList;
         lobbyManager.onPlayersListChanged += PlayerConnection;
         lobbyManager.OnLobbyEntered += OnLobbyJoined;

@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     // Events
     public event UnityAction<List<SessionInfo>> onSessionListUpdated;
     public event UnityAction<PlayerRef, bool> onPlayersListChanged;
+    public event UnityAction onSessionShutdown;
 
     public event UnityAction OnLobbyEntered;
 
@@ -46,15 +47,16 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     //static reference
     public static LobbyManager Instance { get; private set; }
 
-    public async void StartSession()
+    public async void StartSession(string sessionName)
     {
         //Debug.Log(lobbyName.text);
         var result = await networkRunner.StartGame(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = lobbyName.text,
+            SessionName = sessionName,
             OnGameStarted = OnGameStarted,
-            CustomLobbyName = currentLobby
+            CustomLobbyName = currentLobby,
+            PlayerCount = maxAmountOfPlayers
         });
         OnSessionStarted?.Invoke();
     }
@@ -67,6 +69,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
 
         networkRunner.LoadScene(GAME_SCENE_NAME);
+    }
+
+    public void StartSessionWithInput()
+    {
+        StartSession(lobbyName.text);
     }
 
     private void OnGameStarted(NetworkRunner obj)
@@ -144,12 +151,15 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log("Scene load started.");
     }
+
     public void EndSession()
     {
+        
         if (networkRunner.IsRunning)
         {
             networkRunner.Shutdown();
         }
+
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -164,7 +174,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-
+        onSessionShutdown.Invoke();
+        runner.Shutdown();
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
