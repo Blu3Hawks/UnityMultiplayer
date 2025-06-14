@@ -2114,7 +2114,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8614569830675580505}
+  m_Father: {fileID: 1046390259812087296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3691,7 +3691,6 @@ RectTransform:
   m_Children:
   - {fileID: 1744306508107417007}
   - {fileID: 7549975397876975473}
-  - {fileID: 8760765564646479843}
   - {fileID: 8006988535713327921}
   m_Father: {fileID: 3280597946344152393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3732,6 +3731,7 @@ RectTransform:
   - {fileID: 5422379007200474766}
   - {fileID: 1523786817190410966}
   - {fileID: 2647502637220881048}
+  - {fileID: 8760765564646479843}
   m_Father: {fileID: 3280597946344152393}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3938,6 +3938,9 @@ MonoBehaviour:
   lobbyManager: {fileID: 0}
   sessionDataPrefab: {fileID: 4088103415896197896, guid: ed068084a3fb5fd40b6e021ae63ff4dd, type: 3}
   sessionParent: {fileID: 8760765564646479843}
+  activeSessionUI: {fileID: 0}
+  createSessionUI: {fileID: 0}
+  lobbyUI: {fileID: 0}
 --- !u!1 &9135542300668326336
 GameObject:
   m_ObjectHideFlags: 0
