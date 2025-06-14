@@ -42,7 +42,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public int MaxAmountOfPlayers { get { return maxAmountOfPlayers; } }
 
     //scene const names
-    public const string GAME_SCENE_NAME = "MyLobby";
+    public const string GAME_SCENE_NAME = "TestingScene";
 
     //static reference
     public static LobbyManager Instance { get; private set; }
@@ -67,8 +67,9 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void StartMatch()
     {
-
-        networkRunner.LoadScene(GAME_SCENE_NAME);
+        if(networkRunner.IsSceneAuthority){
+            networkRunner.LoadScene(GAME_SCENE_NAME);
+        }
     }
 
     public void StartSessionWithInput()

@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : NetworkBehaviour
 {
-    [Header("Network References")]
-    [SerializeField] private NetworkRunner _networkRunner;
+    
 
     [Header("Movement Settings")]
     [SerializeField] private CharacterController _characterController;
@@ -33,6 +32,10 @@ public class PlayerMovementHandler : NetworkBehaviour
     //player's current rotation velocity
     private float _playerRotationDirection;
 
+    public override void Spawned()
+    {
+        base.Spawned();
+    }
 
     public override void FixedUpdateNetwork()
     {
