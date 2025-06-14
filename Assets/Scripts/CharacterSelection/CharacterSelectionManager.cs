@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelectionManager : NetworkBehaviour
 {
-    [SerializeField] private List<GameObject> characterList;
+    [SerializeField] private List<Material> characterMaterialList;
+
 
     private List<int> takenIndexes = new List<int>();
 

@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6581353}
   - component: {fileID: 6581351}
+  - component: {fileID: 6581354}
   m_Layer: 0
   m_Name: CharacterSelectionManager
   m_TagString: Untagged
@@ -152,7 +153,8 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 6581354}
   ForceRemoteRenderTimeframe: 0
 --- !u!4 &6581353
 Transform:
@@ -170,6 +172,19 @@ Transform:
   - {fileID: 66357964}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6581354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6581350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c6632acd2344d4f915f82076eab6f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterList: []
 --- !u!1 &66357963
 GameObject:
   m_ObjectHideFlags: 0
