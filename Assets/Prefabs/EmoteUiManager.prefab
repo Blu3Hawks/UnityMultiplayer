@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2043329221041812600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5700102585901551325}
+  - component: {fileID: 3569022094349695059}
+  m_Layer: 0
+  m_Name: EmoteUiManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5700102585901551325
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043329221041812600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3569022094349695059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043329221041812600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f45eef05ce064cd4b2ef5a73d1ae3aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emoteSprites:
+  - {fileID: 21300000, guid: f64b5b4b5092358409693b4515554ec6, type: 3}
+  - {fileID: 21300000, guid: bdfcb47e34e801740a84bec1671a965d, type: 3}
+  - {fileID: 21300000, guid: f6e76cfef6a2ead40a9c63e8d5c7751b, type: 3}
+  - {fileID: 21300000, guid: c6e260a448cc1884b8670bf4bce78bee, type: 3}
+  - {fileID: 21300000, guid: ad6dbaed31bd7584fb5279dc5a1afa91, type: 3}
+  - {fileID: 21300000, guid: d752312c96cb9d744889385e4c37f882, type: 3}
+  emoteImage: {fileID: 0}
