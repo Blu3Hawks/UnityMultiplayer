@@ -61,7 +61,7 @@ public class CharacterSelectionManager : NetworkBehaviour
     private async void RPCSpawnSelected([RpcTarget] PlayerRef targetPlayer, int index)
     {
         startingPoints[index].Initialize();
-        NetworkObject spawnedObject = await networkRunner.SpawnAsync(CharacterPrefab.gameObject, startingPoints[index].transform.position + Vector3.up, Quaternion.identity);
+        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, startingPoints[index].transform.position + Vector3.up, Quaternion.identity);
         selectedIndex = index;
 
     }
