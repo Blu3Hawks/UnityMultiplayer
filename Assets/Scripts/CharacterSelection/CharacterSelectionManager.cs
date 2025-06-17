@@ -12,9 +12,6 @@ public class CharacterSelectionManager : NetworkBehaviour
 
     [SerializeField] private List<StartPoint> startingPoints;
 
-
-    [SerializeField] private PlayerManager CharacterPrefab;
-
     [SerializeField] private CharacterButton characterButton;
 
     [SerializeField] private RectTransform LayoutParent;
@@ -31,13 +28,20 @@ public class CharacterSelectionManager : NetworkBehaviour
         for(int i = 0; i< characterList.Count; i++) {
             CharacterButton current = Instantiate(characterButton, LayoutParent);
             current.InitializeButton(i, $"{characterList[i].name}");
-            current.OnColorSelected += (index) => RPCRequestCharacterSelect(index);
+            current.OnColorSelected += HandleCharacterSelected;
         }
     }
 
     public override void Spawned()
     {
         base.Spawned();
+    }
+
+    private void HandleCharacterSelected(int index) {
+        RPCRequestCharacterSelect(index);
+        LayoutParent.gameObject.SetActive(false);
+        
+        
     }
 
 
@@ -48,7 +52,7 @@ public class CharacterSelectionManager : NetworkBehaviour
     {
         if (takenIndexes.Contains(index))
         {
-            Debug.LogWarning("Character already selected");
+            RPCCharacterAlreadySelected(info.Source);
             return;//Insert UI logic of already selected
         }
         takenIndexes.Add(index);
@@ -65,6 +69,20 @@ public class CharacterSelectionManager : NetworkBehaviour
         selectedIndex = index;
 
     }
+
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPCCharacterAlreadySelected([RpcTarget] PlayerRef targetPlayer)
+    {
+        if(networkRunner.LocalPlayer == targetPlayer){
+            Debug.LogWarning("Character already selected");
+
+            LayoutParent.gameObject.SetActive(true);
+
+        }
+
+    }
+
 
     
 
