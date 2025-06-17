@@ -3,109 +3,109 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
-{
-
-    [SerializeField] private TextMeshProUGUI playerJoinedText;
-
-    [SerializeField] private TextMeshProUGUI amountOfPlayers;
-
-    [SerializeField] private LobbyManager lobbyManager;
-
-    [SerializeField] private SessionData sessionDataPrefab;
-
-    [SerializeField] private RectTransform sessionParent;
-
-    [Header("UI References")]
-    [SerializeField] private GameObject activeSessionUI;
-    [SerializeField] private GameObject createSessionUI;
-    [SerializeField] private GameObject lobbyUI;
-
-
-    private List<SessionData> currentSessions = new List<SessionData>();
-
-    public void PlayerConnection(PlayerRef player, bool Joined)
+namespace UI {
+    public class UIManager : MonoBehaviour
     {
-        playerJoinedText.SetText($"Player: {player.PlayerId} {(Joined ? "Joined" : "Left")} the lobby");
-        UpdateUI();
-        // float timer = 0;
-        // while (timer < 1) 
-        // {
-        //     timer += Time.deltaTime;
-        // }
-        // playerJoinedText.SetText("");
+        
+        [SerializeField] private TextMeshProUGUI playerJoinedText;
 
-    }
+        [SerializeField] private TextMeshProUGUI amountOfPlayers;
 
-    private void OnLobbyJoined()
-    {
-        createSessionUI.SetActive(true);
-        lobbyUI.SetActive(false);
-    }
-    private void OnSessionStart()
-    {
-        activeSessionUI.SetActive(true);
-        createSessionUI.SetActive(false);
-        lobbyUI.SetActive(false);
-    }
+        [SerializeField] private LobbyManager lobbyManager;
 
-    private void OnSessionShutDown()
-    {
-        activeSessionUI.SetActive(false);
-        createSessionUI.SetActive(true);
-    }
+        [SerializeField] private SessionData sessionDataPrefab;
 
-    private void UpdateUI()
-    {
-        Debug.Log(lobbyManager.MaxAmountOfPlayers);
-        amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers} / {lobbyManager.MaxAmountOfPlayers}");
-    }
+        [SerializeField] private RectTransform sessionParent;
 
-    public void UpdateSessionList(List<SessionInfo> sessions)
-    {
-        UpdateUI();
-        Debug.Log($"Session count in ui manager: {sessions.Count}");
-        for (int i = 0; i < sessions.Count; i++)
+        [Header("UI References")]
+        [SerializeField] private GameObject activeSessionUI;
+        [SerializeField] private GameObject createSessionUI;
+        [SerializeField] private GameObject lobbyUI;
+        
+        private List<SessionData> currentSessions = new List<SessionData>();
+
+        private void PlayerConnection(PlayerRef player, bool joined)
         {
-            if (i >= currentSessions.Count)
+            playerJoinedText.SetText($"Player: {player.PlayerId} {(joined ? "Joined" : "Left")} the lobby");
+            UpdateUI();
+            // float timer = 0;
+            // while (timer < 1) 
+            // {
+            //     timer += Time.deltaTime;
+            // }
+            // playerJoinedText.SetText("");
+
+        }
+
+        private void OnLobbyJoined()
+        {
+            createSessionUI.SetActive(true);
+            lobbyUI.SetActive(false);
+        }
+        private void OnSessionStart()
+        {
+            activeSessionUI.SetActive(true);
+            createSessionUI.SetActive(false);
+            lobbyUI.SetActive(false);
+        }
+
+        private void OnSessionShutDown()
+        {
+            activeSessionUI.SetActive(false);
+            createSessionUI.SetActive(true);
+        }
+
+        private void UpdateUI()
+        {
+            Debug.Log(lobbyManager.MaxAmountOfPlayers);
+            amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers} / {lobbyManager.MaxAmountOfPlayers}");
+        }
+
+        private void UpdateSessionList(List<SessionInfo> sessions)
+        {
+            UpdateUI();
+            Debug.Log($"Session count in ui manager: {sessions.Count}");
+            for (int i = 0; i < sessions.Count; i++)
             {
-                SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
-                newSession.InitializeLobby(sessions[i]);
-                currentSessions.Add(newSession);
-                newSession.OnSessionSelected += SessionSelected;
+                if (i >= currentSessions.Count)
+                {
+                    SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
+                    newSession.InitializeLobby(sessions[i]);
+                    currentSessions.Add(newSession);
+                    newSession.OnSessionSelected += SessionSelected;
+                }
+                else
+                {
+                    currentSessions[i].InitializeLobby(sessions[i]);
+                }
             }
-            else
+
+            for (int i = sessions.Count; i < currentSessions.Count; i++)
             {
-                currentSessions[i].InitializeLobby(sessions[i]);
+                Destroy(currentSessions[i].gameObject);
             }
         }
 
-        for (int i = sessions.Count; i < currentSessions.Count; i++)
+        private void SessionSelected(SessionInfo session)
         {
-            Destroy(currentSessions[i].gameObject);
+            lobbyManager.StartSession(session.Name);
         }
+
+        private void OnEnable()
+        {
+            lobbyManager.onSessionShutdown += OnSessionShutDown;
+            lobbyManager.onSessionListUpdated += UpdateSessionList;
+            lobbyManager.onPlayersListChanged += PlayerConnection;
+            lobbyManager.OnLobbyEntered += OnLobbyJoined;
+            lobbyManager.OnSessionStarted += OnSessionStart;
+            UpdateUI();
+        }
+
+        private void OnDisable()
+        {
+            lobbyManager.onSessionListUpdated -= UpdateSessionList;
+            lobbyManager.onPlayersListChanged -= PlayerConnection;
+        }
+
     }
-
-    private void SessionSelected(SessionInfo session)
-    {
-        lobbyManager.StartSession(session.Name);
-    }
-
-
-    private void OnEnable()
-    {
-        lobbyManager.onSessionShutdown += OnSessionShutDown;
-        lobbyManager.onSessionListUpdated += UpdateSessionList;
-        lobbyManager.onPlayersListChanged += PlayerConnection;
-        lobbyManager.OnLobbyEntered += OnLobbyJoined;
-        lobbyManager.OnSessionStarted += OnSessionStart;
-        UpdateUI();
-    }
-
-    private void OnDisable()
-    {
-        lobbyManager.onSessionListUpdated -= UpdateSessionList;
-        lobbyManager.onPlayersListChanged -= PlayerConnection;
-    }
-
 }
