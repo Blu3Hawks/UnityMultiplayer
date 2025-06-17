@@ -212,8 +212,9 @@ GameObject:
   - component: {fileID: 8353366910243526689}
   - component: {fileID: 3644291787194033724}
   - component: {fileID: 8891262745347488279}
+  - component: {fileID: 5691010955574726729}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Grey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,6 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthHandler: {fileID: 6568192839206937038}
   _playerMovementHandler: {fileID: 6027818269303557383}
+  meshRenderer: {fileID: 9154743800045853944}
 --- !u!114 &6568192839206937038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85760ca215d5ef345890d418d6f402a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _networkRunner: {fileID: 0}
   _characterController: {fileID: 8353366910243526689}
   _playerModel: {fileID: 7925992741105512971}
   _moveSpeed: 5
@@ -325,8 +326,10 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 2903722874845735464}
   - {fileID: 6568192839206937038}
   - {fileID: 6027818269303557383}
+  - {fileID: 5691010955574726729}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &8891262745347488279
 MonoBehaviour:
@@ -335,7 +338,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7925992741105512971}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -446,3 +449,20 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &5691010955574726729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925992741105512971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
