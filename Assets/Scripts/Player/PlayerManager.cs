@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : NetworkBehaviour
 {
@@ -9,11 +10,14 @@ public class PlayerManager : NetworkBehaviour
 
     [SerializeField] private MeshRenderer meshRenderer;
 
+    [SerializeField] private PlayerInput input;
+
 
     
 
     public override void Spawned()
     {
+        input.enabled = HasStateAuthority;
     }
 
 
