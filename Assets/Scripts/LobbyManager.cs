@@ -36,6 +36,10 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     private int amountOfPlayers;
     private int maxAmountOfPlayers = 2;
 
+    private List<PlayerRef> playersInLobby = new List<PlayerRef>();
+
+    public List<PlayerRef> PlayersInLobby => playersInLobby;
+
     private string currentLobby;
     //properties
     public int AmountOfPlayers { get { return networkRunner.SessionInfo.PlayerCount; } }
@@ -125,6 +129,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
+        if(!playersInLobby.Contains(player)) playersInLobby.Add(player);
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
         //Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
@@ -132,6 +137,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
+        if(playersInLobby.Contains(player)) playersInLobby.Remove(player);
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
         Debug.Log(amountOfPlayers);
 

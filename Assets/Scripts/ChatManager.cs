@@ -1,10 +1,30 @@
+using System.Linq;
 using Fusion;
+using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChatManager : NetworkBehaviour {
     [SerializeField] private EmoteUiManager emoteUiManager;
+
     
+    [SerializeField] private TMP_Dropdown playersDropdown;
+
+    void Start()
+    {
+        LobbyManager.Instance.onPlayersListChanged += HandlePlayerList;
+        UpdateDropdown();
+    }
+
+    private void HandlePlayerList(PlayerRef playerRef, bool joined){
+        UpdateDropdown();
+    }
+    private void UpdateDropdown(){
+        playersDropdown.ClearOptions();
+        playersDropdown.AddOptions(LobbyManager.Instance.PlayersInLobby.Select(player => player.PlayerId.ToString()).ToList());
+    }
+
     // Call this from any client to send an emote to exactly one player.
     public void SendEmoteToPlayer(EmoteType emoteType, PlayerRef target)
     {
