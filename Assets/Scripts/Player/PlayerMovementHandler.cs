@@ -47,7 +47,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void HandlePlayerMovement()
     {
         //if has authority then - 
-        if (Object.HasInputAuthority)
+        if (Object.HasStateAuthority)
         {
 
             PlayerRotation();
