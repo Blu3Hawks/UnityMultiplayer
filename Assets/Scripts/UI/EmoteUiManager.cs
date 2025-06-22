@@ -9,6 +9,8 @@ namespace UI {
         [SerializeField] private Image emoteImage;
         
         public void ShowEmote(EmoteType emoteType, PlayerRef sender) {
+            Debug.Log("at player's showemote");
+
             emoteImage.sprite = emoteSprites[(int)emoteType];
             emoteImage.gameObject.SetActive(true);
         }

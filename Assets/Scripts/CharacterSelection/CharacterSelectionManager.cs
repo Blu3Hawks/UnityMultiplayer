@@ -74,13 +74,9 @@ public class CharacterSelectionManager : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPCCharacterAlreadySelected([RpcTarget] PlayerRef targetPlayer)
     {
-        if(networkRunner.LocalPlayer == targetPlayer){
-            Debug.LogWarning("Character already selected");
+        Debug.LogWarning("Character already selected");
 
-            LayoutParent.gameObject.SetActive(true);
-
-        }
-
+        LayoutParent.gameObject.SetActive(true);
     }
 
 
