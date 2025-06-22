@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestingScene.unity
+    path: Assets/Scenes/GameScene.unity
     guid: 98119d41f4336d44a9a9126a5c167e61
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MyLobby.unity
     guid: f880c031fdb49fe42b531ff458292dd0
   - enabled: 1
-    path: Assets/Scenes/LiorScene.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: d7fcf51792f4b91458ef8b609e22f16e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

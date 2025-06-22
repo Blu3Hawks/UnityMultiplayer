@@ -46,7 +46,10 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public int MaxAmountOfPlayers { get { return maxAmountOfPlayers; } }
 
     //scene const names
-    public const string GAME_SCENE_NAME = "TestingScene";
+    public const string GAME_SCENE_NAME = "GameScene";
+
+    public const string LOBBY_SCENE_NAME = "MainMenu";
+
 
     //static reference
     public static LobbyManager Instance { get; private set; }
