@@ -29,7 +29,11 @@ public class ChatManager : NetworkBehaviour {
     private void UpdateDropdown(){
         playersDropdown.ClearOptions();
         Debug.Log($"Runner null: {Runner == null}, activePlayers null {Runner.ActivePlayers == null}, activeplayers length: {Runner.ActivePlayers.Count()}");
-        playersDropdown.AddOptions(Runner.ActivePlayers.Select(player => player.PlayerId.ToString()).ToList());
+        List<string> playerIds = Runner.ActivePlayers
+            .Where(player => Runner.LocalPlayer.PlayerId != player.PlayerId)
+            .Select(player => player.PlayerId.ToString())
+            .ToList();
+        playersDropdown.AddOptions(playerIds);
     }
 
     // Call this from any client to send an emote to exactly one player.
