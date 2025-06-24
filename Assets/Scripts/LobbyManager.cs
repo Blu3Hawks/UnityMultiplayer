@@ -70,6 +70,12 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     void Awake()
     {
         networkRunner.AddCallbacks(this);
+        onSessionShutdown += HandleSessionShutdown;
+    }
+
+    private void HandleSessionShutdown()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(LOBBY_SCENE_NAME);
     }
 
     public void StartMatch()
