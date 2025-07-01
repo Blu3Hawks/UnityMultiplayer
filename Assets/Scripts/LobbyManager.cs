@@ -128,6 +128,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    public void PressHideSession()
+    {
+        networkRunner.SessionInfo.IsOpen = !networkRunner.SessionInfo.IsOpen;
+    }
+
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         _sessionsList = sessionList;
