@@ -17,7 +17,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public event UnityAction OnLobbyEntered;
 
     public event UnityAction OnSessionStarted;
-
+    public event UnityAction<bool> OnHidingSession;
 
     [Header("References")]
     [SerializeField] private NetworkRunner networkRunner;
@@ -80,7 +80,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void StartMatch()
     {
-        if(networkRunner.IsSceneAuthority){
+        if (networkRunner.IsSceneAuthority)
+        {
             networkRunner.LoadScene(GAME_SCENE_NAME);
         }
     }
@@ -131,6 +132,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void PressHideSession()
     {
         networkRunner.SessionInfo.IsOpen = !networkRunner.SessionInfo.IsOpen;
+        OnHidingSession?.Invoke(networkRunner.SessionInfo.IsOpen);
     }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -143,7 +145,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
-        if(!playersInLobby.Contains(player)) playersInLobby.Add(player);
+        if (!playersInLobby.Contains(player)) playersInLobby.Add(player);
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
         //Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
@@ -151,7 +153,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
-        if(playersInLobby.Contains(player)) playersInLobby.Remove(player);
+        if (playersInLobby.Contains(player)) playersInLobby.Remove(player);
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
         Debug.Log(amountOfPlayers);
 
@@ -175,7 +177,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void EndSession()
     {
-        
+
         if (networkRunner.IsRunning)
         {
             networkRunner.Shutdown();
