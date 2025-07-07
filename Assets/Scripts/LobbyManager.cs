@@ -131,8 +131,9 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void PressHideSession()
     {
+        networkRunner.SessionInfo.IsVisible = !networkRunner.SessionInfo.IsVisible;
         networkRunner.SessionInfo.IsOpen = !networkRunner.SessionInfo.IsOpen;
-        OnHidingSession?.Invoke(networkRunner.SessionInfo.IsOpen);
+        OnHidingSession?.Invoke(networkRunner.SessionInfo.IsVisible);
     }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
