@@ -115,6 +115,29 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         currentLobby = LobbyID;
         var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, LobbyID);
         Debug.Log(lobbyName.text);
+
+        //just check if it's not okay, so we can return early
+        if (!result.Ok)
+        {
+            Debug.LogError($"Failed to join lobby: {result.ShutdownReason}");
+            return;
+        }
+
+        //now we want to check if the lobby is open or not
+        //we will iterate through the sessions list and check if the lobby is open. 
+        foreach (var session in _sessionsList)
+        {
+            if (session.Name == LobbyID)
+            {
+                if (!session.IsOpen)
+                {
+                    Debug.Log("Lobby is not open");
+                    return;
+                }
+            }
+        }
+
+        //check if the lobby is full, if not then join
         if (amountOfPlayers >= MaxAmountOfPlayers)
         {
             Debug.Log("Can't join the lobby, no space");
@@ -125,8 +148,9 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             Debug.Log("Lobby Joined Successfully");
             OnLobbyEntered?.Invoke();
-
         }
+        else
+        { return; }
     }
 
     public void PressHideSession()
