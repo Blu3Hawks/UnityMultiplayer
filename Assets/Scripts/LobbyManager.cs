@@ -149,8 +149,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             Debug.Log("Lobby Joined Successfully");
             OnLobbyEntered?.Invoke();
         }
-        else
-        { return; }
+        
     }
 
     public void PressHideSession()
