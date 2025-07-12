@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 7b5f9a430e42ad9458c265244a78523d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - fxPrefab: {fileID: 3890655088537127561, guid: 62f89e406c7660848acb47fe4899aaad, type: 3}
+  - targetPlayer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
