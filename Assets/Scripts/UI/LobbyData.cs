@@ -14,11 +14,13 @@ public class SessionData : MonoBehaviour
     private SessionInfo current;
 
     public SessionInfo CurrentSessionInfo => current;
+    public string SessionName { get; private set; }
 
 
 
     public void InitializeLobby(SessionInfo session)
     {
+        SessionName = session.Name;
         current = session;
         this.lobbyName.SetText($"{session.Name}");
         this.activePlayers.SetText($"Players: {session.PlayerCount}/{session.MaxPlayers}");

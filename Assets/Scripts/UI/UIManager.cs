@@ -65,24 +65,45 @@ namespace UI {
         {
             UpdateUI();
             Debug.Log($"Session count in ui manager: {sessions.Count}");
-            for (int i = 0; i < sessions.Count; i++)
+
+            //create a dictionary to map session names to SessionData objects
+            Dictionary<string, SessionData> sessionDataByName = new Dictionary<string, SessionData>();
+            foreach (var sessionData in currentSessions)
             {
-                if (i >= currentSessions.Count)
+                if (!string.IsNullOrEmpty(sessionData.SessionName))
+                    sessionDataByName[sessionData.SessionName] = sessionData;
+            }
+
+            //track the sessions by their names via hashset
+            HashSet<string> visibleSessionNames = new HashSet<string>();
+
+            //then foreach try to get the value by the name, if it exists, update it, otherwise instantiate a new one
+            foreach (var session in sessions)
+            {
+                visibleSessionNames.Add(session.Name);
+
+                if (sessionDataByName.TryGetValue(session.Name, out var sessionData))
                 {
-                    SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
-                    newSession.InitializeLobby(sessions[i]);
-                    currentSessions.Add(newSession);
-                    newSession.OnSessionSelected += SessionSelected;
+                    sessionData.InitializeLobby(session);
+                    sessionData.gameObject.SetActive(true);
                 }
                 else
                 {
-                    currentSessions[i].InitializeLobby(sessions[i]);
+                    SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
+                    newSession.InitializeLobby(session);
+                    newSession.OnSessionSelected += SessionSelected;
+                    currentSessions.Add(newSession);
+                    newSession.gameObject.SetActive(true);
                 }
             }
 
-            for (int i = sessions.Count; i < currentSessions.Count; i++)
+            //and after that, disable all session data objects that are not in the list
+            foreach (var sessionData in currentSessions)
             {
-                Destroy(currentSessions[i].gameObject);
+                if (!visibleSessionNames.Contains(sessionData.SessionName))
+                {
+                    sessionData.gameObject.SetActive(false);
+                }
             }
         }
 
