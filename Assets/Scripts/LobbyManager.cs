@@ -17,7 +17,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public event UnityAction OnLobbyEntered;
 
     public event UnityAction OnSessionStarted;
-
+    public event UnityAction<bool> OnHidingSession;
 
     [Header("References")]
     [SerializeField] private NetworkRunner networkRunner;
@@ -80,7 +80,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void StartMatch()
     {
-        if(networkRunner.IsSceneAuthority){
+        if (networkRunner.IsSceneAuthority)
+        {
             networkRunner.LoadScene(GAME_SCENE_NAME);
         }
     }
@@ -114,6 +115,29 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         currentLobby = LobbyID;
         var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, LobbyID);
         Debug.Log(lobbyName.text);
+
+        //just check if it's not okay, so we can return early
+        if (!result.Ok)
+        {
+            Debug.LogError($"Failed to join lobby: {result.ShutdownReason}");
+            return;
+        }
+
+        //now we want to check if the lobby is open or not
+        //we will iterate through the sessions list and check if the lobby is open. 
+        foreach (var session in _sessionsList)
+        {
+            if (session.Name == LobbyID)
+            {
+                if (!session.IsOpen)
+                {
+                    Debug.Log("Lobby is not open");
+                    return;
+                }
+            }
+        }
+
+        //check if the lobby is full, if not then join
         if (amountOfPlayers >= MaxAmountOfPlayers)
         {
             Debug.Log("Can't join the lobby, no space");
@@ -124,8 +148,15 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             Debug.Log("Lobby Joined Successfully");
             OnLobbyEntered?.Invoke();
-
         }
+        
+    }
+
+    public void PressHideSession()
+    {
+        networkRunner.SessionInfo.IsVisible = !networkRunner.SessionInfo.IsVisible;
+        networkRunner.SessionInfo.IsOpen = !networkRunner.SessionInfo.IsOpen;
+        OnHidingSession?.Invoke(networkRunner.SessionInfo.IsVisible);
     }
 
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -138,7 +169,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
-        if(!playersInLobby.Contains(player)) playersInLobby.Add(player);
+        if (!playersInLobby.Contains(player)) playersInLobby.Add(player);
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
         //Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
@@ -146,7 +177,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
-        if(playersInLobby.Contains(player)) playersInLobby.Remove(player);
+        if (playersInLobby.Contains(player)) playersInLobby.Remove(player);
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
         Debug.Log(amountOfPlayers);
 
@@ -170,7 +201,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void EndSession()
     {
-        
+
         if (networkRunner.IsRunning)
         {
             networkRunner.Shutdown();
