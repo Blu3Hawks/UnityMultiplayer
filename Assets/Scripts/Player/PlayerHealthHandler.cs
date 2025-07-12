@@ -1,36 +1,33 @@
 using Fusion;
 using UnityEngine;
 
-public class PlayerHealthHandler : NetworkBehaviour
-{
-    [SerializeField] private PlayerManager _playerManager;
+namespace Player {
+    public class PlayerHealthHandler : NetworkBehaviour {
+        [SerializeField] private PlayerManager playerManager;
 
-    [Header("Player Settings")]
-    [Networked, OnChangedRender(nameof(OnHealthChanged))]
-    [field: SerializeField]
-    public int Health { get; set; }
+        [Header("Player Settings")]
+        [Networked, OnChangedRender(nameof(OnHealthChanged))] [field: SerializeField]
+        public int Health { get; set; }
+        
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        public void RPCTakeDamage(int damage) {
+            Health -= damage;
 
-
-    public void TakeDamage(int damage)
-    {
-        if (Health <= 0) return;
-
-        Health -= damage;
-
-    }
-
-    private void OnHealthChanged()
-    {
-        Debug.Log($"Player health changed: {Health}");
-        if (Health <= 0 && HasStateAuthority)
-        {
-            Die();
+            if (Health <= 0) {
+                Health = 0;
+                Die();
+            }
         }
-    }
 
-    private void Die()
-    {
-        Debug.Log("Player has died.");
-        Runner.Despawn(Object);
+        private void OnHealthChanged() {
+            Debug.Log($"Player health changed: {Health}");
+            
+            // TODO: Add UI Element
+        }
+
+        private void Die() {
+            Debug.Log("Player has died.");
+            Runner.Despawn(Object);
+        }
     }
 }
