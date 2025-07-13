@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 1536289450393808896}
   - component: {fileID: 3249730810736143114}
   - component: {fileID: 5125763448473256294}
+  - component: {fileID: 6384408181811425220}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -139,6 +140,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5125763448473256294}
+  - {fileID: 6384408181811425220}
   ForceRemoteRenderTimeframe: 0
 --- !u!135 &3249730810736143114
 SphereCollider:
@@ -174,3 +176,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileData: {fileID: 11400000, guid: 4c0d961dca7f1454298a6b20252030c3, type: 2}
+--- !u!114 &6384408181811425220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673298444267009243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

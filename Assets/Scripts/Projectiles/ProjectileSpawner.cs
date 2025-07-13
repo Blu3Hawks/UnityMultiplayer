@@ -22,11 +22,10 @@ namespace Projectiles
         {
             while (true)
             {
-                NetworkObject spawnedObject = await Runner.SpawnAsync(projectilePrefab);
-                Projectile proj = spawnedObject.GetComponent<Projectile>();
                 Transform chosen = spawnPoints[Random.Range(0, spawnPoints.Count)];
+                NetworkObject spawnedObject = await Runner.SpawnAsync(projectilePrefab, chosen.transform.position);
+                Projectile proj = spawnedObject.GetComponent<Projectile>();
                 
-                proj.transform.position = chosen.position;
                 proj.SetDirection(chosen.forward);
                 await Task.Delay(1000);
             }
