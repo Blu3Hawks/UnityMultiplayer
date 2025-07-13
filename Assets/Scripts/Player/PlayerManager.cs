@@ -14,7 +14,7 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private PlayerInput input;
 
 
-    
+    public static readonly string PLAYER_TAG = "Player";
 
     public override void Spawned()
     {
