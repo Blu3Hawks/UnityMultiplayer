@@ -1,10 +1,11 @@
 using Fusion;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : NetworkBehaviour
 {
-    
+
 
     [Header("Movement Settings")]
     [SerializeField] private CharacterController _characterController;
@@ -18,10 +19,10 @@ public class PlayerMovementHandler : NetworkBehaviour
 
     [Header("Animator")]
     [SerializeField] private Animator animator; //will be kept as null for now
-
+    [SerializeField] private Animation _wavingAnimation;
     //values of the animator
-    private readonly int moveSpeedHash = Animator.StringToHash("Movement Speed");
-
+    private readonly int _isWaving = Animator.StringToHash("isWaving");
+    private readonly int _isRunning = Animator.StringToHash("isRunning");
 
     //values of the input
     private Vector2 _playerInput;
@@ -82,9 +83,29 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void PlayerMovement()
     {
         _characterController.Move(_playerDirection * _moveSpeed * Runner.DeltaTime);
-        //animator.SetFloat(moveSpeedHash, _characterController.velocity.magnitude); //unable until we will add some stuff, like TRUE ANIMATIONS
+        if (_playerInput.sqrMagnitude < 0.01f)
+        {
+            //if the player is not moving, then we don't need to change the animator
+            animator.SetBool("isRunning", false);
+        }
+        else
+        {
+            animator.SetBool("isRunning", true);
+        }
+
+        if (Input.GetKey(KeyCode.G))
+        {
+            //for testing purposes, we can wave
+            StartCoroutine(WavingAnimationCooldown());
+        }
     }
 
+    private IEnumerator WavingAnimationCooldown()
+    {
+        animator.SetBool(_isWaving, true);
+        yield return new WaitForSeconds(_wavingAnimation.clip.length);
+        animator.SetBool(_isWaving, false);
+    }
     private void ApplyGravity()
     {
         //if we are on the ground, and somehow if the player's velocity is less than 0 by any other... stuff
