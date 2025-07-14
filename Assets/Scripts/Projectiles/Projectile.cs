@@ -49,12 +49,14 @@ namespace Projectiles
             if (other.CompareTag(PlayerManager.PLAYER_TAG))
             {
                 PlayerHealthHandler playerHealthHandler = other.GetComponent<PlayerHealthHandler>();
-                if (playerHealthHandler != null && HasStateAuthority)
+                if (playerHealthHandler != null)
                 {
-                    playerHealthHandler.RPCTakeDamage(10);
-                    Debug.Log("Player hit");
-                    Runner.Despawn(Object);
-
+                    if (HasStateAuthority)
+                    {
+                        playerHealthHandler.RPCTakeDamage(10);
+                        Debug.Log("Player hit");
+                        Runner.Despawn(Object);
+                    }
                     //spawn the particle system
                     playerHealthHandler.SpawnEffect(_particleSystem, transform);
                     //first - there will be an event that will be called
