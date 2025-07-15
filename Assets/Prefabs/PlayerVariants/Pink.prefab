@@ -52,9 +52,13 @@ PrefabInstance:
       propertyPath: SortKey
       value: 461460529
       objectReference: {fileID: 0}
+    - target: {fileID: 6500128314623284435, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0fbdb828d6c98f045a3b5d58f0a40cb2, type: 2}
     - target: {fileID: 7925992741105512971, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: m_Name
-      value: Red 1
+      value: Pink
       objectReference: {fileID: 0}
     - target: {fileID: 8891262745347488279, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: m_Enabled
