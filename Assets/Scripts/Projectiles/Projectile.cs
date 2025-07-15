@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Fusion;
 using Player;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace Projectiles
                     {
                         playerHealthHandler.RPCTakeDamage(10);
                         Debug.Log("Player hit");
-                        Runner.Despawn(Object);
+                        StartCoroutine(DespawnProjectile());
                     }
                     //spawn the particle system
                     playerHealthHandler.SpawnEffect(_particleSystem, transform);
@@ -65,6 +66,11 @@ namespace Projectiles
 
 
             }
+        }
+        private IEnumerator DespawnProjectile()
+        {
+            yield return new WaitForSeconds(0.1f);
+            Runner.Despawn(Object);
         }
     }
 }

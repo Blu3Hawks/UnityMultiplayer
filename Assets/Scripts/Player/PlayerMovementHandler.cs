@@ -19,7 +19,7 @@ public class PlayerMovementHandler : NetworkBehaviour
 
     [Header("Animator")]
     [SerializeField] private Animator animator; //will be kept as null for now
-    [SerializeField] private Animation _wavingAnimation;
+
     //values of the animator
     private readonly int _isWaving = Animator.StringToHash("isWaving");
     private readonly int _isRunning = Animator.StringToHash("isRunning");
@@ -103,7 +103,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     private IEnumerator WavingAnimationCooldown()
     {
         animator.SetBool(_isWaving, true);
-        yield return new WaitForSeconds(_wavingAnimation.clip.length);
+        yield return new WaitForSeconds(0.5f);
         animator.SetBool(_isWaving, false);
     }
     private void ApplyGravity()
