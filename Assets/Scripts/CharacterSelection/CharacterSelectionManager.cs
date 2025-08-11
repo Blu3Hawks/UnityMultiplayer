@@ -47,8 +47,8 @@ public class CharacterSelectionManager : NetworkBehaviour
 
     
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void RPCRequestCharacterSelect(int index, RpcInfo info = default)
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    private async void RPCRequestCharacterSelect(int index, RpcInfo info = default)
     {
         if (takenIndexes.Contains(index))
         {
@@ -56,19 +56,14 @@ public class CharacterSelectionManager : NetworkBehaviour
             return;//Insert UI logic of already selected
         }
         takenIndexes.Add(index);
-        RPCSpawnSelected(info.Source, index);
-
-
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private async void RPCSpawnSelected([RpcTarget] PlayerRef targetPlayer, int index)
-    {
+        
         startingPoints[index].Initialize();
-        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, startingPoints[index].transform.position + Vector3.up, Quaternion.identity);
+        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, startingPoints[index].transform.position + Vector3.up, Quaternion.identity, info.Source);
         selectedIndex = index;
 
     }
+
+    
 
 
     [Rpc(RpcSources.All, RpcTargets.All)]

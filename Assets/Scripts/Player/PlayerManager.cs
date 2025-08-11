@@ -18,7 +18,7 @@ public class PlayerManager : NetworkBehaviour
 
     public override void Spawned()
     {
-        input.enabled = HasStateAuthority;
+        input.enabled = HasInputAuthority;
     }
 
 

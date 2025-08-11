@@ -59,7 +59,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         //Debug.Log(lobbyName.text);
         var result = await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Shared,
+            GameMode = GameMode.AutoHostOrClient,
             SessionName = sessionName,
             OnGameStarted = OnGameStarted,
             CustomLobbyName = currentLobby,
@@ -70,6 +70,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     void Awake()
     {
         networkRunner.AddCallbacks(this);
+        networkRunner.ProvideInput = true;
         onSessionShutdown += HandleSessionShutdown;
     }
 

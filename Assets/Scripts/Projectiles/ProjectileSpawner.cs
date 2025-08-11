@@ -14,7 +14,7 @@ namespace Projectiles
         public override void Spawned()
         {
             base.Spawned();
-            if(HasStateAuthority)
+            if(Runner.IsServer)
                 SpawnProjectiles();
         }
 

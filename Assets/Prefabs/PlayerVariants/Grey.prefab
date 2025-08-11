@@ -748,6 +748,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6080092572878644338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2908889879200239908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8898434471175747996}
+  - component: {fileID: 4038007743962406104}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8898434471175747996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908889879200239908}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 930907878529248678}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4038007743962406104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908889879200239908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fadafc6691348c9be9894800f847d8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3109496186422897793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +1885,7 @@ Transform:
   m_Children:
   - {fileID: 5812161595340929696}
   - {fileID: 2258474018895427396}
+  - {fileID: 8898434471175747996}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2903722874845735464
@@ -1939,6 +1984,7 @@ MonoBehaviour:
   - {fileID: 6027818269303557383}
   - {fileID: 5691010955574726729}
   - {fileID: 3382591709638159994}
+  - {fileID: 4038007743962406104}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &8891262745347488279
 MonoBehaviour:
@@ -1967,8 +2013,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6027818269303557383}
-        m_TargetAssemblyTypeName: PlayerMovementHandler, Assembly-CSharp
+      - m_Target: {fileID: 4038007743962406104}
+        m_TargetAssemblyTypeName: Player.Managers.InputManager, Assembly-CSharp
         m_MethodName: OnPlayerMovement
         m_Mode: 0
         m_Arguments:

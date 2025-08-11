@@ -1,5 +1,6 @@
 using Fusion;
 using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,7 +26,6 @@ public class PlayerMovementHandler : NetworkBehaviour
     private readonly int _isRunning = Animator.StringToHash("isRunning");
 
     //values of the input
-    private Vector2 _playerInput;
     //direction of the input
     private Vector3 _playerDirection;
     //our player's gravitational velocity
@@ -50,20 +50,22 @@ public class PlayerMovementHandler : NetworkBehaviour
         //if has authority then - 
         if (Object.HasStateAuthority)
         {
-
-            PlayerRotation();
-            PlayerMovement();
-            ApplyGravity();
+            if (GetInput(out PlayerInputData data))
+            {
+                PlayerRotation(data);
+                PlayerMovement(data);
+            }
+            // ApplyGravity();
 
         }
     }
 
-    private void PlayerRotation()
+    private void PlayerRotation(PlayerInputData data)
     {
         //if no changes in inputs then we don't need to keep going and change the rotation
-        if (_playerInput.sqrMagnitude == 0) { return; }
+        if (data.Movementvector.sqrMagnitude == 0) { return; }
         //calculate the degree of the angle that we want to look at
-        float angleToRotate = Mathf.Atan2(_playerDirection.x, _playerDirection.z) * Mathf.Rad2Deg;
+        float angleToRotate = Mathf.Atan2(data.Movementvector.x, data.Movementvector.z) * Mathf.Rad2Deg;
         //make a smooth transition between the angles - between the current angle and the new inputted angle
         float angle = Mathf.SmoothDampAngle(
             _playerModel.transform.eulerAngles.y,
@@ -80,10 +82,10 @@ public class PlayerMovementHandler : NetworkBehaviour
         transform.Rotate(Vector3.up, angleDifferences);
     }
 
-    private void PlayerMovement()
+    private void PlayerMovement(PlayerInputData data)
     {
-        _characterController.Move(_playerDirection * _moveSpeed * Runner.DeltaTime);
-        if (_playerInput.sqrMagnitude < 0.01f)
+        _characterController.Move(data.Movementvector * _moveSpeed * Runner.DeltaTime);
+        if (data.Movementvector.sqrMagnitude < 0.01f)
         {
             //if the player is not moving, then we don't need to change the animator
             animator.SetBool("isRunning", false);
@@ -122,9 +124,5 @@ public class PlayerMovementHandler : NetworkBehaviour
     }
 
 
-    public void OnPlayerMovement(InputAction.CallbackContext context)
-    {
-        _playerInput = context.ReadValue<Vector2>();
-        _playerDirection = new Vector3(_playerInput.x, 0, _playerInput.y);
-    }
+    
 }
