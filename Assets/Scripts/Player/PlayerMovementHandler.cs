@@ -36,6 +36,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     public override void Spawned()
     {
         base.Spawned();
+        _characterController.enabled = HasStateAuthority;
     }
 
     public override void FixedUpdateNetwork()
@@ -84,8 +85,8 @@ public class PlayerMovementHandler : NetworkBehaviour
 
     private void PlayerMovement(PlayerInputData data)
     {
-        _characterController.Move(data.Movementvector * _moveSpeed * Runner.DeltaTime);
-        if (data.Movementvector.sqrMagnitude < 0.01f)
+        _characterController.Move( data.Movementvector * _moveSpeed * Runner.DeltaTime);
+        if (data.Movementvector.sqrMagnitude < 0.01f && HasStateAuthority)
         {
             //if the player is not moving, then we don't need to change the animator
             animator.SetBool("isRunning", false);
