@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8b0532fa3881efb44a423796945d2664, type: 2}
+    - target: {fileID: 6851532944797700568, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8b0532fa3881efb44a423796945d2664, type: 2}
     - target: {fileID: 7925992741105512971, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: m_Name
       value: Brown
