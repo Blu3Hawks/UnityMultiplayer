@@ -1862,6 +1862,7 @@ GameObject:
   - component: {fileID: 5691010955574726729}
   - component: {fileID: 2811881644246977586}
   - component: {fileID: 3382591709638159994}
+  - component: {fileID: 8384099570618561883}
   m_Layer: 0
   m_Name: Grey
   m_TagString: Player
@@ -2135,6 +2136,29 @@ MonoBehaviour:
   StateHashes: 000000002b1a167c79406955f3b09ce077934a0f9617531a8c8669f0
   TriggerHashes: 00000000
   TotalWords: 1
+--- !u!136 &8384099570618561883
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7925992741105512971}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &8516251554351067870
 GameObject:
   m_ObjectHideFlags: 0

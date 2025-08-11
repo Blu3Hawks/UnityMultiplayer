@@ -1,6 +1,7 @@
 using Fusion;
 using Projectiles;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
@@ -13,6 +14,8 @@ namespace Player
         [field: SerializeField]
         public int Health { get; set; }
 
+        public event UnityAction OnDeath;
+
         private void OnEnable()
         {
             Projectile.OnProjectileSpawned += OnPlayerHitSpawnParticles;
@@ -23,16 +26,12 @@ namespace Player
             Projectile.OnProjectileSpawned -= OnPlayerHitSpawnParticles;
         }
 
-        [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+        [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RPCTakeDamage(int damage)
         {
-            Health -= damage;
-
-            if (Health <= 0)
-            {
-                Health = 0;
-                Die();
-            }
+            
+            Die();
+            
         }
 
         private void OnHealthChanged()
@@ -45,7 +44,7 @@ namespace Player
         private void Die()
         {
             Debug.Log("Player has died.");
-            Runner.Despawn(Object);
+            OnDeath?.Invoke();
         }
 
         public void SpawnEffect(ParticleSystem ps, Transform transform)
@@ -60,6 +59,7 @@ namespace Player
                 SpawnEffect(ps, transform);
             }
         }
+        
 
     }
 }

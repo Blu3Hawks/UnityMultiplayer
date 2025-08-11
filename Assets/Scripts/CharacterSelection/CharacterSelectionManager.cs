@@ -21,6 +21,8 @@ public class CharacterSelectionManager : NetworkBehaviour
     private List<int> takenIndexes = new List<int>();
     
     private List<PlayerManager> playerManagers = new List<PlayerManager>();
+    
+    public List<PlayerManager> PlayerManagers => playerManagers;
 
     private NetworkRunner networkRunner;
 
@@ -82,10 +84,7 @@ public class CharacterSelectionManager : NetworkBehaviour
 
     private void AllPlayersSelected()
     {
-        foreach (PlayerManager player in playerManagers)
-        {
-            player.ToggleControls(true);
-        }
+        
         OnAllPlayersSelected?.Invoke();
     }
 
