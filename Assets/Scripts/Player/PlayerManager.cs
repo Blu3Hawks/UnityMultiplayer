@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using Player;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class PlayerManager : NetworkBehaviour
     //idk, just in case we might want to shift these to a manager
     [SerializeField] private PlayerHealthHandler _healthHandler;
     [SerializeField] private PlayerMovementHandler _playerMovementHandler;
-
+    [SerializeField] private NetworkTransform _networkTransform;
     [SerializeField] private MeshRenderer meshRenderer;
 
     [SerializeField] private PlayerInput input;
@@ -21,5 +22,20 @@ public class PlayerManager : NetworkBehaviour
         input.enabled = HasInputAuthority;
     }
 
+    public void ToggleControls(bool value)
+    {
+        _playerMovementHandler.ToggleControls(value);
+    }
 
+    public void TeleportToPos(Vector3 pos)
+    {
+        _networkTransform.Teleport(pos);
+    }
+
+    private void OnValidate()
+    {
+        #if UNITY_EDITOR
+        _networkTransform = GetComponent<NetworkTransform>();
+#endif
+    }
 }

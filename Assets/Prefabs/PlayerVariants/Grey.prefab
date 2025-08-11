@@ -1857,7 +1857,6 @@ GameObject:
   - component: {fileID: 2903722874845735464}
   - component: {fileID: 6568192839206937038}
   - component: {fileID: 6027818269303557383}
-  - component: {fileID: 8353366910243526689}
   - component: {fileID: 3644291787194033724}
   - component: {fileID: 8891262745347488279}
   - component: {fileID: 5691010955574726729}
@@ -1902,6 +1901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthHandler: {fileID: 6568192839206937038}
   _playerMovementHandler: {fileID: 6027818269303557383}
+  _networkTransform: {fileID: 5691010955574726729}
   meshRenderer: {fileID: 0}
   input: {fileID: 8891262745347488279}
 --- !u!114 &6568192839206937038
@@ -1930,38 +1930,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85760ca215d5ef345890d418d6f402a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterController: {fileID: 8353366910243526689}
   _playerModel: {fileID: 7925992741105512971}
   _moveSpeed: 5
   _rotationSpeed: 5
   _gravityValue: -9.81
   _gravityMultiplier: 1
   animator: {fileID: 2811881644246977586}
---- !u!143 &8353366910243526689
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7925992741105512971}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &3644291787194033724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2120,7 +2094,7 @@ MonoBehaviour:
   SyncScale: 0
   SyncParent: 0
   _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  DisableSharedModeInterpolation: 1
 --- !u!95 &2811881644246977586
 Animator:
   serializedVersion: 7

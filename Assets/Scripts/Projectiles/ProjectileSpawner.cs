@@ -10,16 +10,19 @@ namespace Projectiles
     {
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private List<Transform> spawnPoints;
-
+        [SerializeField] private CharacterSelectionManager characterSelectionManager;
         public override void Spawned()
         {
             base.Spawned();
-            if(Runner.IsServer)
-                SpawnProjectiles();
+            if (Runner.IsServer)
+            {
+                characterSelectionManager.OnAllPlayersSelected += SpawnProjectiles;
+            }
         }
 
         private async void SpawnProjectiles()
         {
+            if(Runner.IsServer) characterSelectionManager.OnAllPlayersSelected -= SpawnProjectiles;
             while (true)
             {
                 Transform chosen = spawnPoints[Random.Range(0, spawnPoints.Count)];

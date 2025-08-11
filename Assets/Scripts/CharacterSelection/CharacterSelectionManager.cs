@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 
@@ -17,10 +19,14 @@ public class CharacterSelectionManager : NetworkBehaviour
     [SerializeField] private RectTransform LayoutParent;
 
     private List<int> takenIndexes = new List<int>();
+    
+    private List<PlayerManager> playerManagers = new List<PlayerManager>();
 
     private NetworkRunner networkRunner;
 
     [Networked] private int selectedIndex {get; set;}
+
+    public event UnityAction OnAllPlayersSelected;
 
     void Start()
     {
@@ -56,11 +62,31 @@ public class CharacterSelectionManager : NetworkBehaviour
             return;//Insert UI logic of already selected
         }
         takenIndexes.Add(index);
-        
         startingPoints[index].Initialize();
-        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, startingPoints[index].transform.position + Vector3.up, Quaternion.identity, info.Source);
+        Vector3 pos = startingPoints[index].transform.position;
+        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, pos + Vector3.up, Quaternion.identity, info.Source);
+        PlayerManager current = spawnedObject.GetComponent<PlayerManager>();
+        current.TeleportToPos(pos);
+        
+        current.ToggleControls(false);
+        if(current) playerManagers.Add(current);
         selectedIndex = index;
 
+        if (playerManagers.Count == networkRunner.ActivePlayers.Count())
+        {
+            AllPlayersSelected();
+        }//TODO: check if server is player
+        
+
+    }
+
+    private void AllPlayersSelected()
+    {
+        foreach (PlayerManager player in playerManagers)
+        {
+            player.ToggleControls(true);
+        }
+        OnAllPlayersSelected?.Invoke();
     }
 
     

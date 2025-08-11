@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 2747231039
+  SortKey: 1073101729
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -1277,6 +1277,7 @@ MonoBehaviour:
   - {fileID: 211719989}
   - {fileID: 1167905566}
   - {fileID: 577709658}
+  characterSelectionManager: {fileID: 1283661789}
 --- !u!4 &485320836
 Transform:
   m_ObjectHideFlags: 0
@@ -1334,7 +1335,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3777147570
+  SortKey: 2103018260
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
@@ -2888,7 +2889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2347944226977497057, guid: 2c8eed4a5866eb5428ecdccedeafcc0b, type: 3}
       propertyPath: SortKey
-      value: 2813548017
+      value: 1139418707
       objectReference: {fileID: 0}
     - target: {fileID: 8450850982173309287, guid: 2c8eed4a5866eb5428ecdccedeafcc0b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2935,6 +2936,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c8eed4a5866eb5428ecdccedeafcc0b, type: 3}
+--- !u!114 &1283661789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 683067065128289743, guid: 2c8eed4a5866eb5428ecdccedeafcc0b, type: 3}
+  m_PrefabInstance: {fileID: 1283661788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c6632acd2344d4f915f82076eab6f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1449838880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2945,7 +2957,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 286245930958810538, guid: 1ee33749bea59f143b29d3b5c120889d, type: 3}
       propertyPath: SortKey
-      value: 2302236862
+      value: 628107552
       objectReference: {fileID: 0}
     - target: {fileID: 2043329221041812600, guid: 1ee33749bea59f143b29d3b5c120889d, type: 3}
       propertyPath: m_Name

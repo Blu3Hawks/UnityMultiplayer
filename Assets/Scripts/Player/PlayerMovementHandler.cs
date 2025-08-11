@@ -9,7 +9,6 @@ public class PlayerMovementHandler : NetworkBehaviour
 
 
     [Header("Movement Settings")]
-    [SerializeField] private CharacterController _characterController;
     [SerializeField] private GameObject _playerModel;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotationSpeed;
@@ -33,10 +32,11 @@ public class PlayerMovementHandler : NetworkBehaviour
     //player's current rotation velocity
     private float _playerRotationDirection;
 
+    private bool _canMove = true;
+
     public override void Spawned()
     {
         base.Spawned();
-        _characterController.enabled = HasStateAuthority;
     }
 
     public override void FixedUpdateNetwork()
@@ -49,7 +49,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void HandlePlayerMovement()
     {
         //if has authority then - 
-        if (Object.HasStateAuthority)
+        if (Object.HasStateAuthority && _canMove)
         {
             if (GetInput(out PlayerInputData data))
             {
@@ -59,6 +59,11 @@ public class PlayerMovementHandler : NetworkBehaviour
             // ApplyGravity();
 
         }
+    }
+
+    public void ToggleControls(bool value)
+    {
+        _canMove = value;
     }
 
     private void PlayerRotation(PlayerInputData data)
@@ -85,8 +90,8 @@ public class PlayerMovementHandler : NetworkBehaviour
 
     private void PlayerMovement(PlayerInputData data)
     {
-        _characterController.Move( data.Movementvector * _moveSpeed * Runner.DeltaTime);
-        if (data.Movementvector.sqrMagnitude < 0.01f && HasStateAuthority)
+        transform.position +=  ( data.Movementvector * _moveSpeed * Runner.DeltaTime);
+        if (data.Movementvector.sqrMagnitude < 0.01f && HasInputAuthority)
         {
             //if the player is not moving, then we don't need to change the animator
             animator.SetBool("isRunning", false);
@@ -112,14 +117,14 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void ApplyGravity()
     {
         //if we are on the ground, and somehow if the player's velocity is less than 0 by any other... stuff
-        if (_characterController.isGrounded && _playerGravitationalVelocity < 0f)
-        {
-            _playerGravitationalVelocity = 0f;
-        }
-        else
-        {
-            _playerGravitationalVelocity += _gravityValue * _gravityMultiplier * Runner.DeltaTime;
-        }
+        // if (_characterController.isGrounded && _playerGravitationalVelocity < 0f)
+        // {
+        //     _playerGravitationalVelocity = 0f;
+        // }
+        // else
+        // {
+        //     _playerGravitationalVelocity += _gravityValue * _gravityMultiplier * Runner.DeltaTime;
+        // }
         //apply the velocity properly
         _playerDirection.y = _playerGravitationalVelocity;
     }
