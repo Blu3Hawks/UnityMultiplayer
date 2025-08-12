@@ -3,6 +3,7 @@ using System.Collections;
 using Fusion;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Projectiles
 {
@@ -10,7 +11,8 @@ namespace Projectiles
     {
         [SerializeField] private ProjectileData projectileData;
         [SerializeField] private ParticleSystem _particleSystem;
-
+        
+        public event UnityAction<Projectile> OnProjectileDespawned;
 
         private Vector3 _direction;
 
@@ -71,6 +73,12 @@ namespace Projectiles
         {
             yield return new WaitForSeconds(0.1f);
             Runner.Despawn(Object);
+        }
+
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            base.Despawned(runner, hasState);
+            OnProjectileDespawned?.Invoke(this);
         }
     }
 }

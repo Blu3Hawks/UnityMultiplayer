@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Fusion;
 using Game_Events;
+using Projectiles;
 using UnityEngine;
 
 namespace CharacterSelection
@@ -8,6 +9,7 @@ namespace CharacterSelection
     public class GameStateManager : NetworkBehaviour
     {
         [SerializeField] private CharacterSelectionManager characterSelectionManager;
+        [SerializeField] private ProjectileSpawner projectileSpawner;
         private List<PlayerManager> players;
         private List<PlayerManager> livingPlayers = new List<PlayerManager>();
         
@@ -47,7 +49,7 @@ namespace CharacterSelection
                 }    
             }
             
-            
+            projectileSpawner.DespawnAll();
 
             if (playerManagers != null) playersRemaining = playerManagers.Count;
         }

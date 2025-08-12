@@ -825,6 +825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSelectionManager: {fileID: 1283661789}
+  projectileSpawner: {fileID: 485320835}
 --- !u!4 &394597292
 Transform:
   m_ObjectHideFlags: 0
