@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fusion;
+using Game_Events;
 using UnityEngine;
 
 namespace CharacterSelection
@@ -51,8 +52,40 @@ namespace CharacterSelection
             player.ToggleControls(false);
             player.transform.position = new Vector3(100, 100, 100);//Teleport off map
         }
-        
-        
+
+        #region Game Events
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcMatchStarted(int bestOf) {
+            GameEvents.Raise(new GameEvents.MatchStart(bestOf));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcRoundCountdown(int roundIndex, float seconds) {
+            GameEvents.Raise(new GameEvents.RoundCountdownStart(roundIndex, seconds));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcRoundStarted(int roundIndex) {
+            GameEvents.Raise(new GameEvents.RoundStart(roundIndex));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcPlayerDied(int actorNumber) {
+            GameEvents.Raise(new GameEvents.PlayerDied(actorNumber));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcRoundEnded(int roundIndex, int winnerActorNumber) {
+            GameEvents.Raise(new GameEvents.RoundEnd(roundIndex, winnerActorNumber));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcMatchEnded(int winnerActorNumber) {
+            GameEvents.Raise(new GameEvents.MatchEnd(winnerActorNumber));
+        }
+
+        #endregion
         
     }
 }
