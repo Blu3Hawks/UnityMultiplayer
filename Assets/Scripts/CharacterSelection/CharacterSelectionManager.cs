@@ -71,7 +71,7 @@ public class CharacterSelectionManager : NetworkBehaviour
         current.TeleportToPos(pos);
         
         current.ToggleControls(false);
-        if(current) playerManagers.Add(current);
+        if(current && !playerManagers.Contains(current)) playerManagers.Add(current);
         selectedIndex = index;
 
         if (playerManagers.Count == networkRunner.ActivePlayers.Count())

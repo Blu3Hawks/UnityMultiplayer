@@ -9,6 +9,7 @@ namespace CharacterSelection
     {
         [SerializeField] private CharacterSelectionManager characterSelectionManager;
         private List<PlayerManager> players;
+        private List<PlayerManager> livingPlayers = new List<PlayerManager>();
         
         private List<PlayerManager> playerManagers => characterSelectionManager.PlayerManagers;
 
@@ -29,6 +30,8 @@ namespace CharacterSelection
                     player.OnPlayerDeath += HandlePlayerDeath;
                 }    
             }
+
+            if (playerManagers != null) playersRemaining = playerManagers.Count;
             StartRound();
         }
 
@@ -39,6 +42,8 @@ namespace CharacterSelection
                 foreach (PlayerManager player in playerManagers)
                 {
                     player.ToggleControls(true);
+                    livingPlayers.Add(player);
+                    player.TeleportToPos(Vector3.zero);
                 }    
             }
             
@@ -50,37 +55,49 @@ namespace CharacterSelection
         private void HandlePlayerDeath(PlayerManager player)
         {
             player.ToggleControls(false);
-            player.transform.position = new Vector3(100, 100, 100);//Teleport off map
+            player.TeleportToPos(new Vector3(100, 100, 100));//Teleport off map
+            livingPlayers.Remove(player);
+            if (livingPlayers.Count == 1)
+            {
+                //Increase player score logic
+                livingPlayers[0].ToggleControls(false);
+                //UIRPC
+                
+                livingPlayers.Clear();
+                StartRound();
+            }
+
+
         }
 
         #region Game Events
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcMatchStarted(int bestOf) {
             GameEvents.Raise(new GameEvents.MatchStart(bestOf));
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcRoundCountdown(int roundIndex, float seconds) {
             GameEvents.Raise(new GameEvents.RoundCountdownStart(roundIndex, seconds));
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcRoundStarted(int roundIndex) {
             GameEvents.Raise(new GameEvents.RoundStart(roundIndex));
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcPlayerDied(int actorNumber) {
             GameEvents.Raise(new GameEvents.PlayerDied(actorNumber));
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcRoundEnded(int roundIndex, int winnerActorNumber) {
             GameEvents.Raise(new GameEvents.RoundEnd(roundIndex, winnerActorNumber));
         }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RpcMatchEnded(int winnerActorNumber) {
             GameEvents.Raise(new GameEvents.MatchEnd(winnerActorNumber));
         }
