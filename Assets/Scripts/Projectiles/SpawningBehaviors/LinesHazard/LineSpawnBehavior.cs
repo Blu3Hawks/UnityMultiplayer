@@ -13,6 +13,7 @@ namespace Projectiles.SpawningBehaviors.LinesHazard
             {
                 ProjectileWithoutDespawn current = Runner.Spawn(linePrefab, spawnpoint.position, spawnpoint.rotation);
                 current.SetDirection(spawnpoint.forward);
+                InvokeProjectileSpawned(current);
             }
         }
     }

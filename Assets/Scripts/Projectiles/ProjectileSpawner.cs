@@ -17,8 +17,31 @@ namespace Projectiles
         private List<Projectile> activeProjectiles = new List<Projectile>();
 
         private bool shouldSpawn = false;
-        
-        
+
+        public override void Spawned()
+        {
+            base.Spawned();
+            foreach(SpawningBehavior behavior in behaviors)
+            {
+                behavior.OnProjectileSpawned += HandleSpawnedProjectile;
+            }
+            
+        }
+
+        public override void Despawned(NetworkRunner runner, bool hasState)
+        {
+            base.Despawned(runner, hasState);
+            foreach(SpawningBehavior behavior in behaviors)
+            {
+                behavior.OnProjectileSpawned -= HandleSpawnedProjectile;
+            }
+        }
+
+        private void HandleSpawnedProjectile(Projectile obj)
+        {
+            obj.OnProjectileDespawned += RemoveFromActive;
+            activeProjectiles.Add(obj);
+        }
 
         public void SpawnProjectiles()
         {

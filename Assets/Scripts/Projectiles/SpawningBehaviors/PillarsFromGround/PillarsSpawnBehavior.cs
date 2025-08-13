@@ -18,6 +18,7 @@ namespace Projectiles.SpawningBehaviors.PillarsFromGround
                 float randomZ = Random.Range(minBound.position.z, maxBound.position.z);
                 ProjectileWithoutDespawn current = Runner.Spawn(pillarPrefab, new Vector3(randomX,0, randomZ), Quaternion.identity);
                 current.SetDirection(Vector3.zero);
+                InvokeProjectileSpawned(current);
             }
         }
     }
