@@ -149,7 +149,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             Debug.Log("Lobby Joined Successfully");
             OnLobbyEntered?.Invoke();
         }
-        
+
     }
 
     public void PressHideSession()
@@ -188,6 +188,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         maxAmountOfPlayers = amountOfPlayersDropdown.value + 2;
         Debug.Log(maxAmountOfPlayers);
     }
+
+    public void SetMaxAmountOfPlayers(int maxAmountOfPlayers)
+    {
+        this.maxAmountOfPlayers = maxAmountOfPlayers;
+    }
+
+
     public void OnSceneLoadDone(NetworkRunner runner)
     {
 

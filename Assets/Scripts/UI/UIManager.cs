@@ -3,10 +3,11 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-namespace UI {
+namespace UI
+{
     public class UIManager : MonoBehaviour
     {
-        
+
         [SerializeField] private TextMeshProUGUI playerJoinedText;
 
         [SerializeField] private TextMeshProUGUI amountOfPlayers;
@@ -21,7 +22,7 @@ namespace UI {
         [SerializeField] private GameObject activeSessionUI;
         [SerializeField] private GameObject createSessionUI;
         [SerializeField] private GameObject lobbyUI;
-        
+
         private List<SessionData> currentSessions = new List<SessionData>();
 
         private void PlayerConnection(PlayerRef player, bool joined)
@@ -40,13 +41,16 @@ namespace UI {
         private void OnLobbyJoined()
         {
             createSessionUI.SetActive(true);
-            lobbyUI.SetActive(false);
+
+            if (lobbyUI != null)
+                lobbyUI.SetActive(false);
         }
         private void OnSessionStart()
         {
             activeSessionUI.SetActive(true);
             createSessionUI.SetActive(false);
-            lobbyUI.SetActive(false);
+            if (lobbyUI != null)
+                lobbyUI.SetActive(false);
         }
 
         private void OnSessionShutDown()
