@@ -64,7 +64,7 @@ namespace CharacterSelection
                 //Increase player score logic
                 livingPlayers[0].ToggleControls(false);
                 //UIRPC
-                
+                livingPlayers[0].Score += 1;
                 livingPlayers.Clear();
                 StartRound();
             }

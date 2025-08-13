@@ -15,8 +15,9 @@ public class PlayerManager : NetworkBehaviour
 
     [SerializeField] private PlayerInput input;
 
-    
 
+    [Networked] public int Score { get; set; }
+    
     public static readonly string PLAYER_TAG = "Player";
     
     public event UnityAction<PlayerManager> OnPlayerDeath;

@@ -78,6 +78,7 @@ namespace Projectiles
         public override void Despawned(NetworkRunner runner, bool hasState)
         {
             base.Despawned(runner, hasState);
+            StopAllCoroutines();
             OnProjectileDespawned?.Invoke(this);
         }
     }

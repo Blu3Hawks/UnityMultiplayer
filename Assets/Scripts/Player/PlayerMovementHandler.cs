@@ -91,7 +91,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void PlayerMovement(PlayerInputData data)
     {
         transform.position +=  ( data.Movementvector * _moveSpeed * Runner.DeltaTime);
-        if (data.Movementvector.sqrMagnitude < 0.01f && HasInputAuthority)
+        if (data.Movementvector.sqrMagnitude < 0.01f && HasStateAuthority)
         {
             //if the player is not moving, then we don't need to change the animator
             animator.SetBool("isRunning", false);
