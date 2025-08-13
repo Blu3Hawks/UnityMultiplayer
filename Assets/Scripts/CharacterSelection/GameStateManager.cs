@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Fusion;
 using Game_Events;
 using Projectiles;
@@ -30,7 +31,7 @@ namespace CharacterSelection
                 foreach (PlayerManager player in playerManagers)
                 {
                     player.OnPlayerDeath += HandlePlayerDeath;
-                }    
+                }   
             }
 
             if (playerManagers != null) playersRemaining = playerManagers.Count;
@@ -46,10 +47,11 @@ namespace CharacterSelection
                     player.ToggleControls(true);
                     livingPlayers.Add(player);
                     player.TeleportToPos(Vector3.zero);
-                }    
+                }
+                projectileSpawner.SpawnProjectiles();
+                
             }
             
-            projectileSpawner.DespawnAll();
 
             if (playerManagers != null) playersRemaining = playerManagers.Count;
         }
@@ -62,14 +64,22 @@ namespace CharacterSelection
             if (livingPlayers.Count == 1)
             {
                 //Increase player score logic
-                livingPlayers[0].ToggleControls(false);
                 //UIRPC
                 livingPlayers[0].Score += 1;
                 livingPlayers.Clear();
-                StartRound();
+                projectileSpawner.DespawnAll();
+                projectileSpawner.StopSpawning();
+                StartCoroutine(CountdownNextRound());
             }
 
 
+        }
+
+        private IEnumerator CountdownNextRound()
+        {
+            RpcRoundCountdown(0, 3);
+            yield return new WaitForSeconds(3f);
+            StartRound();
         }
 
         #region Game Events

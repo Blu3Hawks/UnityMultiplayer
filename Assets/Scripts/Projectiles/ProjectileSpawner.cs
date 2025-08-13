@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
+using Projectiles.SpawningBehaviors;
 using UnityEngine;
 
 namespace Projectiles
@@ -12,29 +13,25 @@ namespace Projectiles
         [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private CharacterSelectionManager characterSelectionManager;
 
+        [SerializeField] private List<SpawningBehavior> behaviors;
         private List<Projectile> activeProjectiles = new List<Projectile>();
+
+        private bool shouldSpawn = false;
         
-        public override void Spawned()
+        
+
+        public void SpawnProjectiles()
         {
-            base.Spawned();
-            if (Runner.IsServer)
-            {
-                characterSelectionManager.OnAllPlayersSelected += SpawnProjectiles;
-            }
+            if (!Runner.IsServer && !HasStateAuthority) return;
+            StartCoroutine(SpawnCoroutine());
         }
 
-        private async void SpawnProjectiles()
+        private IEnumerator SpawnCoroutine()
         {
-            if(Runner.IsServer) characterSelectionManager.OnAllPlayersSelected -= SpawnProjectiles;
             while (true)
             {
-                Transform chosen = spawnPoints[Random.Range(0, spawnPoints.Count)];
-                NetworkObject spawnedObject = await Runner.SpawnAsync(projectilePrefab, chosen.transform.position);
-                Projectile proj = spawnedObject.GetComponent<Projectile>();
-                activeProjectiles.Add(proj);
-                proj.OnProjectileDespawned += RemoveFromActive;
-                proj.SetDirection(chosen.forward);
-                await Task.Delay(1000);
+                behaviors[Random.Range(0, behaviors.Count)].StartSpawning();
+                yield return new WaitForSeconds(7f);
             }
         }
         
@@ -42,6 +39,11 @@ namespace Projectiles
         {
             obj.OnProjectileDespawned -= RemoveFromActive;
             activeProjectiles.Remove(obj);
+        }
+
+        public void StopSpawning()
+        {
+            StopCoroutine(SpawnCoroutine());
         }
 
         public void DespawnAll()

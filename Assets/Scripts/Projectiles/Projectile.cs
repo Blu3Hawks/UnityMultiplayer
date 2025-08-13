@@ -18,6 +18,8 @@ namespace Projectiles
 
         private float _lifeTime = 0;
 
+        private bool _hit = false;
+
         public static event Action<PlayerHealthHandler, ParticleSystem, Transform> OnProjectileSpawned;
 
 
@@ -47,8 +49,9 @@ namespace Projectiles
 
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
+            if (_hit && HasStateAuthority) return;//prevents hitting 2 players
             if (other.CompareTag(PlayerManager.PLAYER_TAG))
             {
                 PlayerHealthHandler playerHealthHandler = other.GetComponent<PlayerHealthHandler>();
@@ -56,6 +59,7 @@ namespace Projectiles
                 {
                     if (HasStateAuthority)
                     {
+                        _hit = true;
                         playerHealthHandler.RPCTakeDamage(10);
                         Debug.Log("Player hit");
                         StartCoroutine(DespawnProjectile());
