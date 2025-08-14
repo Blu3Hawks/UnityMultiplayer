@@ -71,7 +71,7 @@ namespace Projectiles
 
         public void DespawnAll()
         {
-            for(int i = activeProjectiles.Count -1 ; i > 0; i--)
+            for(int i = activeProjectiles.Count -1 ; i >= 0; i--)
             {
                 Runner.Despawn(activeProjectiles[i].Object);
             }
