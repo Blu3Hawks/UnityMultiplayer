@@ -25,4 +25,11 @@ public class ClientUtilities : MonoBehaviour
             _joiningLobbyObject.SetActive(ok);
         }
     }
+
+    public void ShowActiveSessionUI(bool joinedOk)
+    {
+        if (!joinedOk) return;
+        if (_joiningLobbyObject) _joiningLobbyObject.SetActive(false);
+        if (_activeSessionObject) _activeSessionObject.SetActive(true);
+    }
 }

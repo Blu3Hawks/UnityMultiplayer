@@ -3,6 +3,7 @@ using Fusion.Sockets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -209,21 +210,23 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         this.maxAmountOfPlayers = maxAmountOfPlayers;
     }
 
-    public async void JoinSessionAsClient(string sessionName)
+
+    public async Task<bool> JoinSessionAsClientAsync(string sessionName)
     {
         if (!networkRunner) networkRunner = GetComponent<NetworkRunner>() ?? gameObject.AddComponent<NetworkRunner>();
         var sceneMgr = GetComponent<NetworkSceneManagerDefault>() ?? gameObject.AddComponent<NetworkSceneManagerDefault>();
 
-        Debug.Log($"[CLIENT] Joining '{sessionName}' with GameMode=Client");
         var result = await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Client,   // <— join a Host/Server room
+            GameMode = GameMode.Client,//cuz we all clients here
             SessionName = sessionName,
             SceneManager = sceneMgr
         });
 
         if (!result.Ok)
             Debug.LogError($"[CLIENT] Join failed: {result.ShutdownReason}");
+
+        return result.Ok;
     }
 
     public void OnSceneLoadDone(NetworkRunner runner)

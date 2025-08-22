@@ -9,6 +9,7 @@ public class SessionData : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyName;
     [SerializeField] private TextMeshProUGUI activePlayers;
     [SerializeField] private LobbyManager _lobbyManager;
+    [SerializeField] private ClientUtilities _clientUI; 
 
     public event UnityAction<SessionInfo> OnSessionSelected;
 
@@ -19,11 +20,12 @@ public class SessionData : MonoBehaviour
 
 
 
-    public void InitializeLobby(SessionInfo session, LobbyManager lobbyManager)
+    public void InitializeLobby(SessionInfo session, LobbyManager lobbyManager, ClientUtilities clientUtilities)
     {
         SessionName = session.Name;
         current = session;
         _lobbyManager = lobbyManager;
+        _clientUI = clientUtilities;
         this.lobbyName.SetText($"{session.Name}");
         this.activePlayers.SetText($"Players: {session.PlayerCount - 1}/{session.MaxPlayers - 1}");
     }
@@ -33,8 +35,9 @@ public class SessionData : MonoBehaviour
         OnSessionSelected?.Invoke(current);
     }
 
-    public void ConnectToSession()
+    public async void ConnectToSession()
     {
-        _lobbyManager.JoinSessionAsClient(SessionName);
+        bool ok = await _lobbyManager.JoinSessionAsClientAsync(SessionName);
+        if (_clientUI) _clientUI.ShowActiveSessionUI(ok);
     }
 }

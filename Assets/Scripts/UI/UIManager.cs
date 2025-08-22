@@ -18,6 +18,8 @@ namespace UI
 
         [SerializeField] private RectTransform sessionParent;
 
+        [SerializeField] private ClientUtilities clientUtilities;
+
         [Header("UI References")]
         [SerializeField] private GameObject activeSessionUI;
         [SerializeField] private GameObject createSessionUI;
@@ -88,13 +90,13 @@ namespace UI
 
                 if (sessionDataByName.TryGetValue(session.Name, out var sessionData))
                 {
-                    sessionData.InitializeLobby(session, lobbyManager);
+                    sessionData.InitializeLobby(session, lobbyManager, clientUtilities);
                     sessionData.gameObject.SetActive(true);
                 }
                 else
                 {
                     SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
-                    newSession.InitializeLobby(session, lobbyManager);
+                    newSession.InitializeLobby(session, lobbyManager, clientUtilities);
                     newSession.OnSessionSelected += SessionSelected;
                     currentSessions.Add(newSession);
                     newSession.gameObject.SetActive(true);

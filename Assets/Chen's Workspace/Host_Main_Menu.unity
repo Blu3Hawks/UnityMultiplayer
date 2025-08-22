@@ -169,6 +169,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &94630250 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6278668157531315799, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+  m_PrefabInstance: {fileID: 1013683978036894574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &96812449 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1027562140559462597, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
@@ -379,6 +384,10 @@ PrefabInstance:
       propertyPath: m_IgnoreReversedGraphics
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6550133713487362050, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7686670323830611910, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -403,6 +412,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 54211740}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: lobbyUI
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: lobbyManager
       value: 
@@ -851,6 +864,7 @@ MonoBehaviour:
   _lobbyManager: {fileID: 54211740}
   _lobbyName: HostModeLobby
   _joiningLobbyObject: {fileID: 1895087604}
+  _activeSessionObject: {fileID: 94630250}
 --- !u!1 &1555857317
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,6 +1237,10 @@ PrefabInstance:
       propertyPath: lobbyManager
       value: 
       objectReference: {fileID: 54211740}
+    - target: {fileID: 8526895330804051677, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: clientUtilities
+      value: 
+      objectReference: {fileID: 1538118176}
     - target: {fileID: 8611281221237466165, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_text
       value: Join Game
