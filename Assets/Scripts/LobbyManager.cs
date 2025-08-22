@@ -1,7 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Fusion;
 using Fusion.Sockets;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,9 +35,9 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     //private variables
     private int amountOfPlayers;
-    private int maxAmountOfPlayers = 2;
+    private int maxAmountOfPlayers = 5;
 
-    private List<PlayerRef> playersInLobby = new List<PlayerRef>();
+    private List<PlayerRef> playersInLobby = new List<PlayerRef>(); 
 
     public List<PlayerRef> PlayersInLobby => playersInLobby;
 
@@ -59,7 +60,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         //Debug.Log(lobbyName.text);
         var result = await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Shared,
+            GameMode = GameMode.Host,
             SessionName = sessionName,
             OnGameStarted = OnGameStarted,
             CustomLobbyName = currentLobby,
@@ -70,13 +71,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     void Awake()
     {
         networkRunner.AddCallbacks(this);
-        onSessionShutdown += HandleSessionShutdown;
+        //onSessionShutdown += HandleSessionShutdown;
     }
 
-    private void HandleSessionShutdown()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(LOBBY_SCENE_NAME);
-    }
+   // private void HandleSessionShutdown()
+    //{
+      //  UnityEngine.SceneManagement.SceneManager.LoadScene(LOBBY_SCENE_NAME);
+    //}
 
     public void StartMatch()
     {
@@ -110,11 +111,25 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
+    public IEnumerator JoinLobbyCoroutine(string lobbyId, System.Action<bool> onDone = null)
+    {
+        currentLobby = lobbyId;
+
+        var task = networkRunner.JoinSessionLobby(SessionLobby.Custom, lobbyId);
+        // wait until the async task finishes
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        var ok = task.IsCompletedSuccessfully && task.Result.Ok;
+        if (ok) OnLobbyEntered?.Invoke();
+        else Debug.LogError($"Failed to join lobby: {task.Result.ShutdownReason}");
+
+        onDone?.Invoke(ok);
+    }
+
     public async void JoinLobby(string LobbyID)
     {
         currentLobby = LobbyID;
         var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, LobbyID);
-        Debug.Log(lobbyName.text);
 
         //just check if it's not okay, so we can return early
         if (!result.Ok)
@@ -194,6 +209,22 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         this.maxAmountOfPlayers = maxAmountOfPlayers;
     }
 
+    public async void JoinSessionAsClient(string sessionName)
+    {
+        if (!networkRunner) networkRunner = GetComponent<NetworkRunner>() ?? gameObject.AddComponent<NetworkRunner>();
+        var sceneMgr = GetComponent<NetworkSceneManagerDefault>() ?? gameObject.AddComponent<NetworkSceneManagerDefault>();
+
+        Debug.Log($"[CLIENT] Joining '{sessionName}' with GameMode=Client");
+        var result = await networkRunner.StartGame(new StartGameArgs
+        {
+            GameMode = GameMode.Client,   // <— join a Host/Server room
+            SessionName = sessionName,
+            SceneManager = sceneMgr
+        });
+
+        if (!result.Ok)
+            Debug.LogError($"[CLIENT] Join failed: {result.ShutdownReason}");
+    }
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {

@@ -88,13 +88,13 @@ namespace UI
 
                 if (sessionDataByName.TryGetValue(session.Name, out var sessionData))
                 {
-                    sessionData.InitializeLobby(session);
+                    sessionData.InitializeLobby(session, lobbyManager);
                     sessionData.gameObject.SetActive(true);
                 }
                 else
                 {
                     SessionData newSession = Instantiate(sessionDataPrefab, sessionParent);
-                    newSession.InitializeLobby(session);
+                    newSession.InitializeLobby(session, lobbyManager);
                     newSession.OnSessionSelected += SessionSelected;
                     currentSessions.Add(newSession);
                     newSession.gameObject.SetActive(true);

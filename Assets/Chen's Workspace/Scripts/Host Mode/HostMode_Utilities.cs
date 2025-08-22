@@ -1,0 +1,54 @@
+using Fusion;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
+
+public class HostMode_Utilities : MonoBehaviour
+{
+    [Header("Lobby & Sessions")]
+    [SerializeField] private string _customLobbyName = "HostModeLobby";
+    [SerializeField] private List<string> _sessionNames = new List<string>() { "Room_A", "Room_B", "Room_C" };
+    [SerializeField] private int _maxPlayers = 5;
+
+    private readonly List<NetworkRunner> _networkRunners = new List<NetworkRunner>();
+
+    private async void Start()
+    {
+        await CreateAllSessions();
+    }
+
+    private async Task CreateAllSessions()
+    {
+        foreach (string name in _sessionNames)
+        {
+            GameObject runnerGameObject = new GameObject($"Runner_{name}");
+            runnerGameObject.transform.SetParent(transform);
+
+            NetworkRunner runner = runnerGameObject.AddComponent<NetworkRunner>();
+            NetworkSceneManagerDefault sceneManager = runnerGameObject.AddComponent<NetworkSceneManagerDefault>();
+
+            runner.ProvideInput = false;
+            _networkRunners.Add(runner);
+
+            StartGameArgs args = new StartGameArgs
+            {
+                GameMode = GameMode.Server,
+                SessionName = name,
+                CustomLobbyName = _customLobbyName,
+                SceneManager = sceneManager,
+                PlayerCount = _maxPlayers
+            };
+
+            var result = await runner.StartGame(args);
+            if (!result.Ok)
+            {
+                Debug.LogError($"Failed to start session '{name}': {result.ShutdownReason}");
+            }
+            else
+            {
+                Debug.Log($"Started session '{name}' in lobby '{_customLobbyName}'.");
+            }
+        }
+    }
+}
