@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Game_Events;
 using UnityEngine;
@@ -83,6 +84,11 @@ namespace CharacterSelection
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RpcMatchEnded(int winnerActorNumber) {
             GameEvents.Raise(new GameEvents.MatchEnd(winnerActorNumber));
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcScoreSet(int actor, int score) {
+            GameEvents.Raise(new GameEvents.ScoreSet(actor, score));
         }
 
         #endregion
