@@ -13,6 +13,8 @@ public class CharacterSelectionManager : NetworkBehaviour
     [SerializeField] private List<PlayerManager> characterList;
 
     [SerializeField] private List<StartPoint> startingPoints;
+    
+    public List<StartPoint> StartingPoints => startingPoints;
 
     [SerializeField] private CharacterButton characterButton;
 

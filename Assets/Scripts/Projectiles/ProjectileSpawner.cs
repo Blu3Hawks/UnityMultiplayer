@@ -18,6 +18,7 @@ namespace Projectiles
 
         private bool shouldSpawn = false;
 
+        private Coroutine currentCoroutine;
         public override void Spawned()
         {
             base.Spawned();
@@ -46,7 +47,7 @@ namespace Projectiles
         public void SpawnProjectiles()
         {
             if (!Runner.IsServer && !HasStateAuthority) return;
-            StartCoroutine(SpawnCoroutine());
+            currentCoroutine = StartCoroutine(SpawnCoroutine());
         }
 
         private IEnumerator SpawnCoroutine()
@@ -66,7 +67,7 @@ namespace Projectiles
 
         public void StopSpawning()
         {
-            StopCoroutine(SpawnCoroutine());
+            StopCoroutine(currentCoroutine);
         }
 
         public void DespawnAll()

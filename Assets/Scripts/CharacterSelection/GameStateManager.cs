@@ -42,11 +42,13 @@ namespace CharacterSelection
         {
             if (playerManagers != null && playerManagers.Count > 0)
             {
+                int i = 0;
                 foreach (PlayerManager player in playerManagers)
                 {
+                    i++;
                     player.ToggleControls(true);
                     livingPlayers.Add(player);
-                    player.TeleportToPos(Vector3.zero);
+                    player.TeleportToPos(characterSelectionManager.StartingPoints[i].transform.position);
                 }
                 projectileSpawner.SpawnProjectiles();
                 
