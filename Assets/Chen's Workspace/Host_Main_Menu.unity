@@ -1157,6 +1157,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -150
       objectReference: {fileID: 0}
+    - target: {fileID: 2264412325008527536, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+      propertyPath: m_Name
+      value: Quit Session
+      objectReference: {fileID: 0}
     - target: {fileID: 3099945012862804895, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1259,7 +1263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760765564646479843, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8900465372545140611, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_IsActive

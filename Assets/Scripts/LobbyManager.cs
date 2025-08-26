@@ -38,7 +38,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     private int amountOfPlayers;
     private int maxAmountOfPlayers = 5;
 
-    private List<PlayerRef> playersInLobby = new List<PlayerRef>(); 
+    private List<PlayerRef> playersInLobby = new List<PlayerRef>();
 
     public List<PlayerRef> PlayersInLobby => playersInLobby;
 
@@ -59,13 +59,19 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public async void StartSession(string sessionName)
     {
         //Debug.Log(lobbyName.text);
+        var sceneMgr = GetComponent<NetworkSceneManagerDefault>() ?? gameObject.AddComponent<NetworkSceneManagerDefault>();
+        networkRunner.ProvideInput = false;
+
         var result = await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Host,
+            GameMode = GameMode.Server,
             SessionName = sessionName,
             OnGameStarted = OnGameStarted,
             CustomLobbyName = currentLobby,
-            PlayerCount = maxAmountOfPlayers
+            PlayerCount = maxAmountOfPlayers,
+            IsOpen = true,
+            IsVisible = true,
+            SceneManager = sceneMgr
         });
         OnSessionStarted?.Invoke();
     }
@@ -73,11 +79,14 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         networkRunner.AddCallbacks(this);
         //onSessionShutdown += HandleSessionShutdown;
+
+        // Ensure this runner behaves as a dedicated server (not counted as a player)
+        networkRunner.ProvideInput = false;
     }
 
-   // private void HandleSessionShutdown()
+    // private void HandleSessionShutdown()
     //{
-      //  UnityEngine.SceneManagement.SceneManager.LoadScene(LOBBY_SCENE_NAME);
+    //  UnityEngine.SceneManagement.SceneManager.LoadScene(LOBBY_SCENE_NAME);
     //}
 
     public void StartMatch()
@@ -96,7 +105,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     private void OnGameStarted(NetworkRunner obj)
     {
         // Debug.Log("Game Started + Chen HaHomo");
-        if (networkRunner.IsSharedModeMasterClient)
+        if (networkRunner.IsServer)
             networkRunner.Spawn(readyManagerGeneric);
         amountOfPlayers++;
 
@@ -187,7 +196,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         amountOfPlayers = runner.SessionInfo.PlayerCount;
         if (!playersInLobby.Contains(player)) playersInLobby.Add(player);
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
-        //Debug.Log($"playercount: {runner.SessionInfo?.PlayerCount}");
+        //DebugLog($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

@@ -25,11 +25,11 @@ public class HostMode_Utilities : MonoBehaviour
             GameObject runnerGameObject = new GameObject($"Runner_{name}");
             runnerGameObject.transform.SetParent(transform);
 
-            NetworkRunner runner = runnerGameObject.AddComponent<NetworkRunner>();
+            NetworkRunner networkRunner = runnerGameObject.AddComponent<NetworkRunner>();
             NetworkSceneManagerDefault sceneManager = runnerGameObject.AddComponent<NetworkSceneManagerDefault>();
 
-            runner.ProvideInput = false;
-            _networkRunners.Add(runner);
+            networkRunner.ProvideInput = false;
+            _networkRunners.Add(networkRunner);
 
             StartGameArgs args = new StartGameArgs
             {
@@ -40,7 +40,7 @@ public class HostMode_Utilities : MonoBehaviour
                 PlayerCount = _maxPlayers
             };
 
-            var result = await runner.StartGame(args);
+            var result = await networkRunner.StartGame(args);
             if (!result.Ok)
             {
                 Debug.LogError($"Failed to start session '{name}': {result.ShutdownReason}");
