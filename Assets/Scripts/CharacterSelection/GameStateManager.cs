@@ -18,15 +18,25 @@ namespace CharacterSelection
         private List<PlayerManager> playerManagers => characterSelectionManager.PlayerManagers;
 
         private int playersRemaining;
+        
+        [SerializeField] private int bestOf = 7;
+
+        [Networked] public int RoundIndex { get; set; }
+
+
 
         public override void Spawned()
         {
-            if(Runner.IsServer)
+            if (Runner.IsServer)
+            {
                 characterSelectionManager.OnAllPlayersSelected += StartGame;
+                RoundIndex = 0;
+            }
         }
 
         public void StartGame()
         {
+            RpcMatchStarted(bestOf);
             if (playerManagers != null && playerManagers.Count > 0)
             {
                 foreach (PlayerManager player in playerManagers)
@@ -41,6 +51,8 @@ namespace CharacterSelection
 
         public void StartRound()
         {
+            RoundIndex++;
+            RpcRoundStarted(RoundIndex);
             if (playerManagers != null && playerManagers.Count > 0)
             {
                 int i = 0;
@@ -64,11 +76,15 @@ namespace CharacterSelection
             player.ToggleControls(false);
             player.TeleportToPos(new Vector3(100, 100, 100));//Teleport off map
             livingPlayers.Remove(player);
+            RpcPlayerDied(player.Id.GetHashCode());
             if (livingPlayers.Count == 1)
             {
                 //Increase player score logic
                 //UIRPC
+                RpcRoundEnded(RoundIndex, livingPlayers[0].Id.GetHashCode());
                 livingPlayers[0].Score += 1;
+                RpcScoreSet(livingPlayers[0].Id.GetHashCode(), livingPlayers[0].Score);
+                if(livingPlayers[0].Score >= bestOf) RpcMatchEnded(livingPlayers[0].Id.GetHashCode());
                 livingPlayers.Clear();
                 projectileSpawner.DespawnAll();
                 projectileSpawner.StopSpawning();
