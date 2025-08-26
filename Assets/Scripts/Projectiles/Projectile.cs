@@ -12,6 +12,7 @@ namespace Projectiles
         [SerializeField] private ProjectileData projectileData;
         [SerializeField] private ParticleSystem _particleSystem;
         
+        private bool _shouldRotate = false;
         public event UnityAction<Projectile> OnProjectileDespawned;
 
         private Vector3 _direction;
@@ -33,6 +34,11 @@ namespace Projectiles
         {
             this._direction = direction;
         }
+        
+        public void SetShouldRotate(bool shouldRotate)
+        {
+            this._shouldRotate = shouldRotate;
+        }
 
 
         public override void FixedUpdateNetwork()
@@ -41,7 +47,7 @@ namespace Projectiles
             if (HasStateAuthority)
             {
                 this.transform.position += this._direction * projectileData.Speed * Runner.DeltaTime;
-
+                if(_shouldRotate) this.transform.Rotate(Vector3.up * 360f * Runner.DeltaTime);
                 _lifeTime -= Runner.DeltaTime;
                 if (_lifeTime <= 0)
                     Runner.Despawn(Object);

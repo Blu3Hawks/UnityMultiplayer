@@ -96,7 +96,7 @@ namespace CharacterSelection
 
         private IEnumerator CountdownNextRound()
         {
-            RpcRoundCountdown(0, 3);
+            RpcRoundCountdown(RoundIndex, 3);
             yield return new WaitForSeconds(3f);
             StartRound();
         }
