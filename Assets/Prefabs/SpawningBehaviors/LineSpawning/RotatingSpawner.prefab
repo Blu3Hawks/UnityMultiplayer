@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 555418131601499462}
   - component: {fileID: 9020758156492725133}
   - component: {fileID: 8971575005893276716}
-  - component: {fileID: 5339875532421406460}
   m_Layer: 0
   m_Name: RotatingSpawner
   m_TagString: Untagged
@@ -82,7 +81,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 4065616698422403543}
   - {fileID: 8739551762807907681}
-  linePrefab: {fileID: 7146266943336600516, guid: 3dca94b6a40b07644ae82638525a8a84, type: 3}
+  linePrefab: {fileID: 7146266943336600516, guid: 5463fe936074d2343b81fb368324f577, type: 3}
   ShouldRotate: 1
 --- !u!114 &8971575005893276716
 MonoBehaviour:
@@ -103,20 +102,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 9020758156492725133}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &5339875532421406460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2934325768912307216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: 27f76aedb608e854185ae7595bceec28
 --- !u!1 &5282424241349101069
 GameObject:
   m_ObjectHideFlags: 0

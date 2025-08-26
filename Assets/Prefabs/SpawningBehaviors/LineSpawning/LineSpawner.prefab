@@ -218,6 +218,7 @@ MonoBehaviour:
   - {fileID: 2758876690508815483}
   - {fileID: 4400992064932586730}
   linePrefab: {fileID: 7146266943336600516, guid: 3dca94b6a40b07644ae82638525a8a84, type: 3}
+  ShouldRotate: 0
 --- !u!114 &8157580434945575822
 MonoBehaviour:
   m_ObjectHideFlags: 0

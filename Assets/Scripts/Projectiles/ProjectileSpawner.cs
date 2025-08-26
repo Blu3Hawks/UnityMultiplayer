@@ -52,6 +52,7 @@ namespace Projectiles
 
         private IEnumerator SpawnCoroutine()
         {
+            yield return new WaitForSeconds(5f);
             while (true)
             {
                 behaviors[Random.Range(0, behaviors.Count)].StartSpawning();
