@@ -9,7 +9,7 @@ public class SessionData : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyName;
     [SerializeField] private TextMeshProUGUI activePlayers;
     [SerializeField] private LobbyManager _lobbyManager;
-    [SerializeField] private ClientUtilities _clientUI; 
+    [SerializeField] private ClientUtilities _clientUtilities;
 
     public event UnityAction<SessionInfo> OnSessionSelected;
 
@@ -25,19 +25,22 @@ public class SessionData : MonoBehaviour
         SessionName = session.Name;
         current = session;
         _lobbyManager = lobbyManager;
-        _clientUI = clientUtilities;
+        _clientUtilities = clientUtilities;
         this.lobbyName.SetText($"{session.Name}");
-        this.activePlayers.SetText($"Players: {session.PlayerCount - 1}/{session.MaxPlayers - 1}");
+        this.activePlayers.SetText($"Players: {session.PlayerCount}/{session.MaxPlayers}");
     }
 
-    public void SessionSelectedPressed()
+    public async void SessionSelected(SessionInfo session)
     {
-        OnSessionSelected?.Invoke(current);
+        bool ok = await _lobbyManager.JoinSessionAsClientAsync(session.Name);
+        if (ok)
+        {
+            _clientUtilities.ShowActiveSessionUI(true);
+        }
     }
-
     public async void ConnectToSession()
     {
         bool ok = await _lobbyManager.JoinSessionAsClientAsync(SessionName);
-        if (_clientUI) _clientUI.ShowActiveSessionUI(ok);
+        if (_clientUtilities) _clientUtilities.ShowActiveSessionUI(ok);
     }
 }
