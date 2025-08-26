@@ -113,9 +113,10 @@ namespace UI
             }
         }
 
-        private void SessionSelected(SessionInfo session)
+        private async void SessionSelected(SessionInfo session)
         {
-            lobbyManager.StartSession(session.Name);
+            bool ok = await lobbyManager.JoinSessionAsClientAsync(session.Name);
+            if (ok) clientUtilities.ShowActiveSessionUI(true);
         }
 
         private void OnEnable()

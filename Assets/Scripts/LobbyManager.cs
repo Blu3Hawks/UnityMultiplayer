@@ -73,6 +73,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             IsVisible = true,
             SceneManager = sceneMgr
         });
+        Debug.Log($"[SERVER:{sessionName}] Max={networkRunner.SessionInfo.MaxPlayers}, " +
+          $"Count={networkRunner.SessionInfo.PlayerCount}, " +
+          $"Open={networkRunner.SessionInfo.IsOpen}, Visible={networkRunner.SessionInfo.IsVisible}, " +
+          $"ProvideInput={networkRunner.ProvideInput}");
+
         OnSessionStarted?.Invoke();
     }
     void Awake()
@@ -189,6 +194,12 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         _sessionsList = sessionList;
         Debug.Log($"Session count: {_sessionsList.Count}");
         onSessionListUpdated?.Invoke(_sessionsList);
+
+        foreach (var s in sessionList)
+        {
+            Debug.Log($"[LIST] {s.Name}  {s.PlayerCount}/{s.MaxPlayers}  Open={s.IsOpen} Visible={s.IsVisible}");
+        }
+
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
