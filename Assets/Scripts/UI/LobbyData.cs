@@ -27,7 +27,7 @@ public class SessionData : MonoBehaviour
         _lobbyManager = lobbyManager;
         _clientUtilities = clientUtilities;
         this.lobbyName.SetText($"{session.Name}");
-        this.activePlayers.SetText($"Players: {session.PlayerCount}/{session.MaxPlayers}");
+        this.activePlayers.SetText($"Players: {session.PlayerCount - 1}/{session.MaxPlayers - 1}");
     }
 
     public async void SessionSelected(SessionInfo session)

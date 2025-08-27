@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static Unity.Collections.Unicode;
 
 public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -28,6 +29,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private Button startGameButton;
     //need to add an int of max players to the lobby, so that it can be set through the UI
     [SerializeField] private TMP_Dropdown amountOfPlayersDropdown;
+
+    [SerializeField] private GameObject _activeSessionObject;
 
     public ReadyManager readyManagerInstance;
 
@@ -58,9 +61,12 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void StartSession(string sessionName)
     {
-        //Debug.Log(lobbyName.text);
-        var sceneMgr = GetComponent<NetworkSceneManagerDefault>() ?? gameObject.AddComponent<NetworkSceneManagerDefault>();
-        networkRunner.ProvideInput = false;
+        // Use existing runner if it points to a child; otherwise create one
+        if (!networkRunner || networkRunner.gameObject == this.gameObject)
+            networkRunner = CreateRunnerChild("ServerRunner", provideInput: false);
+
+        var sceneMgr = networkRunner.GetComponent<NetworkSceneManagerDefault>()
+                       ?? networkRunner.gameObject.AddComponent<NetworkSceneManagerDefault>();
 
         var result = await networkRunner.StartGame(new StartGameArgs
         {
@@ -73,20 +79,15 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             IsVisible = true,
             SceneManager = sceneMgr
         });
-        Debug.Log($"[SERVER:{sessionName}] Max={networkRunner.SessionInfo.MaxPlayers}, " +
-          $"Count={networkRunner.SessionInfo.PlayerCount}, " +
-          $"Open={networkRunner.SessionInfo.IsOpen}, Visible={networkRunner.SessionInfo.IsVisible}, " +
-          $"ProvideInput={networkRunner.ProvideInput}");
 
         OnSessionStarted?.Invoke();
     }
+
+
     void Awake()
     {
         networkRunner.AddCallbacks(this);
         //onSessionShutdown += HandleSessionShutdown;
-
-        // Ensure this runner behaves as a dedicated server (not counted as a player)
-        networkRunner.ProvideInput = false;
     }
 
     // private void HandleSessionShutdown()
@@ -128,10 +129,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public IEnumerator JoinLobbyCoroutine(string lobbyId, System.Action<bool> onDone = null)
     {
-        currentLobby = lobbyId;
+        if (!networkRunner || networkRunner.gameObject == this.gameObject)
+            networkRunner = CreateRunnerChild("ClientRunner_Lobby", provideInput: true);
 
+        currentLobby = lobbyId;
         var task = networkRunner.JoinSessionLobby(SessionLobby.Custom, lobbyId);
-        // wait until the async task finishes
         yield return new WaitUntil(() => task.IsCompleted);
 
         var ok = task.IsCompletedSuccessfully && task.Result.Ok;
@@ -140,6 +142,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
         onDone?.Invoke(ok);
     }
+
 
     public async void JoinLobby(string LobbyID)
     {
@@ -194,12 +197,6 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         _sessionsList = sessionList;
         Debug.Log($"Session count: {_sessionsList.Count}");
         onSessionListUpdated?.Invoke(_sessionsList);
-
-        foreach (var s in sessionList)
-        {
-            Debug.Log($"[LIST] {s.Name}  {s.PlayerCount}/{s.MaxPlayers}  Open={s.IsOpen} Visible={s.IsVisible}");
-        }
-
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -233,12 +230,15 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async Task<bool> JoinSessionAsClientAsync(string sessionName)
     {
-        if (!networkRunner) networkRunner = GetComponent<NetworkRunner>() ?? gameObject.AddComponent<NetworkRunner>();
-        var sceneMgr = GetComponent<NetworkSceneManagerDefault>() ?? gameObject.AddComponent<NetworkSceneManagerDefault>();
+        if (!networkRunner || networkRunner.gameObject == this.gameObject)
+            networkRunner = CreateRunnerChild("ClientRunner", provideInput: true);
+
+        var sceneMgr = networkRunner.GetComponent<NetworkSceneManagerDefault>()
+                       ?? networkRunner.gameObject.AddComponent<NetworkSceneManagerDefault>();
 
         var result = await networkRunner.StartGame(new StartGameArgs
         {
-            GameMode = GameMode.Client,//cuz we all clients here
+            GameMode = GameMode.Client,
             SessionName = sessionName,
             SceneManager = sceneMgr
         });
@@ -248,6 +248,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
         return result.Ok;
     }
+
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
@@ -262,12 +263,74 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void EndSession()
     {
-
         if (networkRunner.IsRunning)
         {
             networkRunner.Shutdown();
         }
+    }
 
+    public async void OnLeaveButtonPressed()
+    {
+        await LeaveSessionAsync(rejoinLobby: true);
+        _activeSessionObject.SetActive(false);
+    }
+
+    public async Task<bool> LeaveSessionAsync(bool rejoinLobby = true)
+    {
+        if (networkRunner && networkRunner.IsRunning)
+            await networkRunner.Shutdown();   // proper client leave
+
+        // If the runner GO gets destroyed by Fusion, our field may become null.
+        // If not, explicitly destroy the child so we start fresh.
+        DestroyRunnerIfChild();
+
+        if (rejoinLobby && !string.IsNullOrEmpty(currentLobby))
+        {
+            // fresh lobby-runner
+            networkRunner = CreateRunnerChild("ClientRunner_Lobby", provideInput: true);
+            var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, currentLobby);
+            if (!result.Ok)
+            {
+                Debug.LogError($"Failed to re-join lobby '{currentLobby}': {result.ShutdownReason}");
+                return false;
+            }
+            OnLobbyEntered?.Invoke();
+        }
+        return true;
+    }
+
+    //some helpers
+    private Transform _runnerRoot;
+
+    private void EnsureRunnerRoot()
+    {
+        if (_runnerRoot == null)
+        {
+            var root = new GameObject("RunnerRoot");
+            root.transform.SetParent(transform, false);
+            _runnerRoot = root.transform;
+        }
+    }
+
+    private NetworkRunner CreateRunnerChild(string name, bool provideInput)
+    {
+        EnsureRunnerRoot();
+        var go = new GameObject(name);
+        go.transform.SetParent(_runnerRoot, false);
+        var runner = go.AddComponent<NetworkRunner>();
+        runner.AddCallbacks(this);
+        runner.ProvideInput = provideInput;
+        return runner;
+    }
+
+    private void DestroyRunnerIfChild()
+    {
+        if (networkRunner)
+        {
+            var go = networkRunner.gameObject;
+            networkRunner = null;
+            if (go) Destroy(go);  // destroy only the child, NOT this manager
+        }
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -282,8 +345,10 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        onSessionShutdown.Invoke();
-        runner.Shutdown();
+        if (runner.IsServer)
+        {
+            onSessionShutdown?.Invoke();
+        }
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
