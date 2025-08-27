@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static Unity.Collections.Unicode;
 
 public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -16,6 +15,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public event UnityAction<List<SessionInfo>> onSessionListUpdated;
     public event UnityAction<PlayerRef, bool> onPlayersListChanged;
     public event UnityAction onSessionShutdown;
+
 
     public event UnityAction OnLobbyEntered;
 
@@ -40,6 +40,8 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     //private variables
     private int amountOfPlayers;
     private int maxAmountOfPlayers = 5;
+    private PlayerRef? firstPlayer = null; //null means no players currently inside the session game
+    private Transform _runnerRoot;
 
     private List<PlayerRef> playersInLobby = new List<PlayerRef>();
 
@@ -205,7 +207,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
-        if (!playersInLobby.Contains(player)) playersInLobby.Add(player);
+        if (!playersInLobby.Contains(player)) { playersInLobby.Add(player); }
+        if (firstPlayer == null)
+        {
+            firstPlayer = player;
+            Debug.Log($"First player is now {player.PlayerId}");
+            UpdateStartButtonAuthority();
+        }
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
         onSessionListUpdated?.Invoke(_sessionsList);
         //DebugLog($"playercount: {runner.SessionInfo?.PlayerCount}");
@@ -214,7 +222,16 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
-        if (playersInLobby.Contains(player)) playersInLobby.Remove(player);
+        if (playersInLobby.Contains(player)) { playersInLobby.Remove(player); }
+        if (firstPlayer == player)
+        {
+            firstPlayer = playersInLobby.Count > 0 ? playersInLobby[0] : (PlayerRef?)null;
+            Debug.Log(firstPlayer.HasValue
+                ? $"First player reassigned to {firstPlayer.Value.PlayerId}"
+                : "No players left, first player cleared.");
+
+            UpdateStartButtonAuthority();
+        }
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
         onSessionListUpdated?.Invoke(_sessionsList);
         Debug.Log(amountOfPlayers);
@@ -306,9 +323,6 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
 
-    //some helpers
-    private Transform _runnerRoot;
-
     private void EnsureRunnerRoot()
     {
         if (_runnerRoot == null)
@@ -329,6 +343,25 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         runner.ProvideInput = provideInput;
         return runner;
     }
+
+    private void UpdateStartButtonAuthority()
+    {
+        //if we don't have a button, idk
+        if (startGameButton == null) return;
+
+        //if first player has value, or rather if we have got a first player in general
+        if (firstPlayer.HasValue && networkRunner.LocalPlayer == firstPlayer.Value)
+        {
+            //then the start button will be interactable
+            startGameButton.interactable = true;
+        }
+        else
+        {
+            //other wise we dont want to let it be interactive, so only one player can be starting the game
+            startGameButton.interactable = false;
+        }
+    }
+
 
     private void DestroyRunnerIfChild()
     {
