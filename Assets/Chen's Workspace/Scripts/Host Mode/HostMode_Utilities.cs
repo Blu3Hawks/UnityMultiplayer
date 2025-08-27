@@ -10,6 +10,7 @@ public class HostMode_Utilities : MonoBehaviour
     [SerializeField] private string _customLobbyName = "HostModeLobby";
     [SerializeField] private List<string> _sessionNames = new List<string>() { "Room_A", "Room_B", "Room_C" };
     [SerializeField] private int _maxPlayers = 5;
+    [SerializeField] private PlayerRef _firstPlayerRef; //make it a reference, use it to store the first player, then use it to know who can start the game with the UI button
 
     private readonly List<NetworkRunner> _networkRunners = new List<NetworkRunner>();
 

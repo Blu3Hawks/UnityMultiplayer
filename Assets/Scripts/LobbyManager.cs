@@ -99,10 +99,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void StartMatch()
     {
-        if (networkRunner.IsSceneAuthority)
-        {
-            networkRunner.LoadScene(GAME_SCENE_NAME);
-        }
+        networkRunner.LoadScene(GAME_SCENE_NAME);
     }
 
     public void StartSessionWithInput()
@@ -124,7 +121,6 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         if (networkRunner.IsSceneAuthority)
         {
             startGameButton.interactable = true;
-            startGameButton.onClick.AddListener(StartMatch);
         }
 
     }
