@@ -30,14 +30,6 @@ public class SessionData : MonoBehaviour
         this.activePlayers.SetText($"Players: {session.PlayerCount - 1}/{session.MaxPlayers - 1}");
     }
 
-    public async void SessionSelected(SessionInfo session)
-    {
-        bool ok = await _lobbyManager.JoinSessionAsClientAsync(session.Name);
-        if (ok)
-        {
-            _clientUtilities.ShowActiveSessionUI(true);
-        }
-    }
     public async void ConnectToSession()
     {
         bool ok = await _lobbyManager.JoinSessionAsClientAsync(SessionName);

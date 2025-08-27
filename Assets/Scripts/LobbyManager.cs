@@ -148,6 +148,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         currentLobby = LobbyID;
         var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, LobbyID);
+        onSessionListUpdated?.Invoke(_sessionsList);
 
         //just check if it's not okay, so we can return early
         if (!result.Ok)
@@ -155,6 +156,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
             Debug.LogError($"Failed to join lobby: {result.ShutdownReason}");
             return;
         }
+        onSessionListUpdated?.Invoke(_sessionsList);
 
         //now we want to check if the lobby is open or not
         //we will iterate through the sessions list and check if the lobby is open. 
@@ -169,6 +171,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
                 }
             }
         }
+        onSessionListUpdated?.Invoke(_sessionsList);
 
         //check if the lobby is full, if not then join
         if (amountOfPlayers >= MaxAmountOfPlayers)
@@ -204,6 +207,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         amountOfPlayers = runner.SessionInfo.PlayerCount;
         if (!playersInLobby.Contains(player)) playersInLobby.Add(player);
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
+        onSessionListUpdated?.Invoke(_sessionsList);
         //DebugLog($"playercount: {runner.SessionInfo?.PlayerCount}");
     }
 
@@ -212,6 +216,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         amountOfPlayers--;
         if (playersInLobby.Contains(player)) playersInLobby.Remove(player);
         onPlayersListChanged?.Invoke(player, false); // When player left - invoke with false bool
+        onSessionListUpdated?.Invoke(_sessionsList);
         Debug.Log(amountOfPlayers);
 
     }
@@ -273,20 +278,19 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         await LeaveSessionAsync(rejoinLobby: true);
         _activeSessionObject.SetActive(false);
+        onSessionListUpdated?.Invoke(_sessionsList);
+
     }
 
     public async Task<bool> LeaveSessionAsync(bool rejoinLobby = true)
     {
         if (networkRunner && networkRunner.IsRunning)
-            await networkRunner.Shutdown();   // proper client leave
+            await networkRunner.Shutdown();
 
-        // If the runner GO gets destroyed by Fusion, our field may become null.
-        // If not, explicitly destroy the child so we start fresh.
         DestroyRunnerIfChild();
 
         if (rejoinLobby && !string.IsNullOrEmpty(currentLobby))
         {
-            // fresh lobby-runner
             networkRunner = CreateRunnerChild("ClientRunner_Lobby", provideInput: true);
             var result = await networkRunner.JoinSessionLobby(SessionLobby.Custom, currentLobby);
             if (!result.Ok)
@@ -294,10 +298,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
                 Debug.LogError($"Failed to re-join lobby '{currentLobby}': {result.ShutdownReason}");
                 return false;
             }
+
             OnLobbyEntered?.Invoke();
+            onSessionListUpdated?.Invoke(_sessionsList);
         }
         return true;
     }
+
 
     //some helpers
     private Transform _runnerRoot;
