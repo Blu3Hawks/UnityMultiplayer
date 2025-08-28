@@ -40,7 +40,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     //private variables
     private int amountOfPlayers;
     private int maxAmountOfPlayers = 5;
-    private PlayerRef? firstPlayer = null; //null means no players currently inside the session game
+    private PlayerRef? _startingPlayerRef = null; //null means no players currently inside the session game
     private Transform _runnerRoot;
 
     private List<PlayerRef> playersInLobby = new List<PlayerRef>();
@@ -204,12 +204,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         amountOfPlayers = runner.SessionInfo.PlayerCount;
         if (!playersInLobby.Contains(player)) { playersInLobby.Add(player); }
-        if (firstPlayer == null)
+        if (_startingPlayerRef == null)
         {
-            firstPlayer = player;
+            _startingPlayerRef = player;
             Debug.Log($"First player is now {player.PlayerId}");
             UpdateStartButtonAuthority();
         }
+
         onPlayersListChanged?.Invoke(player, true); // When player joined - invoke with true bool
         onSessionListUpdated?.Invoke(_sessionsList);
         //DebugLog($"playercount: {runner.SessionInfo?.PlayerCount}");
@@ -219,11 +220,11 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         amountOfPlayers--;
         if (playersInLobby.Contains(player)) { playersInLobby.Remove(player); }
-        if (firstPlayer == player)
+        if (_startingPlayerRef == player)
         {
-            firstPlayer = playersInLobby.Count > 0 ? playersInLobby[0] : (PlayerRef?)null;
-            Debug.Log(firstPlayer.HasValue
-                ? $"First player reassigned to {firstPlayer.Value.PlayerId}"
+            _startingPlayerRef = playersInLobby.Count > 0 ? playersInLobby[0] : (PlayerRef?)null;
+            Debug.Log(_startingPlayerRef.HasValue
+                ? $"First player reassigned to {_startingPlayerRef.Value.PlayerId}"
                 : "No players left, first player cleared.");
 
             UpdateStartButtonAuthority();
@@ -346,7 +347,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         if (startGameButton == null) return;
 
         //if first player has value, or rather if we have got a first player in general
-        if (firstPlayer.HasValue && networkRunner.LocalPlayer == firstPlayer.Value)
+        if (_startingPlayerRef.HasValue && networkRunner.LocalPlayer == _startingPlayerRef.Value)
         {
             //then the start button will be interactable
             startGameButton.interactable = true;
