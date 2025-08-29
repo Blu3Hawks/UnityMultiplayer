@@ -94,8 +94,4 @@ public class RoomState : NetworkBehaviour
         TotalClients = totalClients;
         ReadyCount = _ready.Count;
     }
-    internal void ServerSetTotals(Func<int> count)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -11,7 +11,7 @@ public class RoomVotingServer : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private string gameSceneName = "TestingScene";
 
     private NetworkRunner _runner;
-    private RoomState _stateInstance;
+    private RoomState _roomState;
 
     private void Awake()
     {
@@ -23,29 +23,37 @@ public class RoomVotingServer : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (_runner && _runner.IsServer && roomStatePrefab)
         {
-            _stateInstance = _runner.Spawn(roomStatePrefab);
-            _stateInstance.VotingOpen = true;
-            _stateInstance.GameStarting = false;
+            _roomState = _runner.Spawn(roomStatePrefab);
+            _roomState.VotingOpen = true;
+            _roomState.GameStarting = false;
             PushTotals();
         }
     }
 
     private void PushTotals()
     {
-        if (_stateInstance == null || !_runner) return;
-        _stateInstance.ServerSetTotals(_runner.ActivePlayers.Count);
+        if (_roomState == null || !_runner) return;
+        _roomState.ServerSetTotals(_runner.ActivePlayers.Count());
     }
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (!runner.IsServer) return;
-        PushTotals();
+        if (_roomState)
+        {
+            _roomState.ServerOnPlayerJoined(runner.ActivePlayers.Count());
+            PushTotals();
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         if (!runner.IsServer) return;
-        if (_stateInstance) _stateInstance.ServerClearReady(player);
-        PushTotals();
+        if (_roomState)
+        {
+            _roomState.ServerClearReady(player);
+            _roomState.ServerOnPlayerLeft(player, runner.ActivePlayers.Count());
+            PushTotals();
+        }
     }
 
     public void OnSessionListUpdated(NetworkRunner r, List<SessionInfo> s) { }
