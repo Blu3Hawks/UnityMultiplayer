@@ -70,6 +70,7 @@ public class RoomState : NetworkBehaviour
 
         if (ok)
         {
+            Debug.Log("we start the game !");
             GameStarting = true;
             VotingOpen = false;
             Runner.LoadScene("TestingScene");
