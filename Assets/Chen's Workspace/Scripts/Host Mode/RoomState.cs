@@ -1,5 +1,6 @@
 using Fusion;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomState : NetworkBehaviour
@@ -15,7 +16,7 @@ public class RoomState : NetworkBehaviour
     [SerializeField] public bool requireAllReady = true;
     [SerializeField, Range(0.5f, 1f)] public float readyRatio = 1f;
 
-    private readonly System.Collections.Generic.HashSet<PlayerRef> _ready = new();
+    private readonly HashSet<PlayerRef> _ready = new HashSet<PlayerRef>();
 
     public void ServerSetTotals(int totalClients)
     {
@@ -36,9 +37,9 @@ public class RoomState : NetworkBehaviour
     {
         if (!Runner.IsServer) return;
 
-        var p = info.Source;
-        if (ready) _ready.Add(p);
-        else _ready.Remove(p);
+        var player = info.Source;
+        if (ready) _ready.Add(player);
+        else _ready.Remove(player);
 
         ReadyCount = _ready.Count;
         TryStartIfThresholdMet();
@@ -78,7 +79,20 @@ public class RoomState : NetworkBehaviour
             VotingOpen = true;
         }
     }
+    public void ServerOnPlayerJoined(int totalClients)
+    {
+        if (!Runner.IsServer) return;
+        TotalClients = totalClients;
+        ReadyCount = _ready.Count;
+    }
 
+    public void ServerOnPlayerLeft(PlayerRef player, int totalClients)
+    {
+        if (!Runner.IsServer) return;
+        _ready.Remove(player);
+        TotalClients = totalClients;
+        ReadyCount = _ready.Count;
+    }
     internal void ServerSetTotals(Func<int> count)
     {
         throw new NotImplementedException();

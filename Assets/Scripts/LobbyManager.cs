@@ -76,11 +76,6 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionStarted?.Invoke();
     }
 
-    void Awake()
-    {
-        networkRunner.AddCallbacks(this);
-    }
-
     public void StartMatch()
     {
         networkRunner.LoadScene(GAME_SCENE_NAME);
