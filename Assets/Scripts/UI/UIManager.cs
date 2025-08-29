@@ -126,7 +126,6 @@ namespace UI
             lobbyManager.onPlayersListChanged += PlayerConnection;
             lobbyManager.OnLobbyEntered += OnLobbyJoined;
             lobbyManager.OnSessionStarted += OnSessionStart;
-            UpdateUI();
         }
 
         private void OnDisable()
