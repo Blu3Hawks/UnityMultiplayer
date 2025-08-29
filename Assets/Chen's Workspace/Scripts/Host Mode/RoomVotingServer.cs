@@ -51,7 +51,7 @@ public class RoomVotingServer : MonoBehaviour, INetworkRunnerCallbacks
         if (_roomState)
         {
             _roomState.ServerClearReady(player);
-            _roomState.ServerOnPlayerLeft(player, runner.ActivePlayers.Count());
+            _roomState.ServerOnPlayerLeft(player);
             PushTotals();
         }
     }

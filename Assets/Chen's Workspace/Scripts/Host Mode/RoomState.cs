@@ -6,7 +6,7 @@ using UnityEngine;
 public class RoomState : NetworkBehaviour
 {
     [Networked] public int ReadyCount { get; set; }
-    [Networked] public int TotalClients { get; set; }
+    [Networked] public int TotalClients { get; set; } = 2;
     [Networked] public bool VotingOpen { get; set; }
     [Networked] public bool GameStarting { get; set; }
     public static RoomState Current { get; private set; }
@@ -87,11 +87,11 @@ public class RoomState : NetworkBehaviour
         ReadyCount = _ready.Count;
     }
 
-    public void ServerOnPlayerLeft(PlayerRef player, int totalClients)
+    public void ServerOnPlayerLeft(PlayerRef player)
     {
         if (!Runner.IsServer) return;
         _ready.Remove(player);
-        TotalClients = totalClients;
+        TotalClients -= 1;
         ReadyCount = _ready.Count;
     }
 }
