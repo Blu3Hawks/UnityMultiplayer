@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2903722874845735464, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
+      propertyPath: characterName
+      value: Yellow
+      objectReference: {fileID: 0}
     - target: {fileID: 3382591709638159994, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: Animator
       value: 

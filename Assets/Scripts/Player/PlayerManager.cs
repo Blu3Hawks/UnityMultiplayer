@@ -4,6 +4,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using WebSocketSharp;
 
 public class PlayerManager : NetworkBehaviour
 {
@@ -15,7 +16,9 @@ public class PlayerManager : NetworkBehaviour
 
     [SerializeField] private PlayerInput input;
 
-
+    [SerializeField] private String characterName;
+    
+    public String CharacterName => characterName;
     [Networked] public int Score { get; set; }
     
     public static readonly string PLAYER_TAG = "Player";
@@ -53,6 +56,7 @@ public class PlayerManager : NetworkBehaviour
     {
         #if UNITY_EDITOR
         _networkTransform = GetComponent<NetworkTransform>();
+        if(characterName.IsNullOrEmpty())characterName = name;
 #endif
     }
 }

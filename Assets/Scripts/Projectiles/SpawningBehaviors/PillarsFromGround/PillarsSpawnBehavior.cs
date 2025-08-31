@@ -10,7 +10,7 @@ namespace Projectiles.SpawningBehaviors.PillarsFromGround
         [SerializeField] private Transform minBound;
         [SerializeField] private Transform maxBound;
         [SerializeField] private int pillarCount;
-        public override void StartSpawning()
+        public override void StartSpawning(float Duration)
         {
             for (int i = 0; i < pillarCount; i++)
             {

@@ -41,6 +41,7 @@ namespace CharacterSelection
             {
                 foreach (PlayerManager player in playerManagers)
                 {
+                    RpcPlayerJoined(player.Id.GetHashCode(), player.CharacterName);
                     player.OnPlayerDeath += HandlePlayerDeath;
                 }   
             }
@@ -93,7 +94,6 @@ namespace CharacterSelection
 
 
         }
-
         private IEnumerator CountdownNextRound()
         {
             RpcRoundCountdown(RoundIndex, 3);
@@ -136,6 +136,12 @@ namespace CharacterSelection
         [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
         public void RpcScoreSet(int actor, int score) {
             GameEvents.Raise(new GameEvents.ScoreSet(actor, score));
+        }
+        
+        
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RpcPlayerJoined(int actor, string name) {
+            GameEvents.Raise(actor, name);
         }
 
         #endregion

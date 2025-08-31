@@ -55,7 +55,8 @@ namespace Projectiles
             yield return new WaitForSeconds(5f);
             while (true)
             {
-                behaviors[Random.Range(0, behaviors.Count)].StartSpawning();
+                Debug.Log("Spawning");
+                behaviors[Random.Range(0, behaviors.Count)].StartSpawning(7);
                 yield return new WaitForSeconds(7f);
             }
         }

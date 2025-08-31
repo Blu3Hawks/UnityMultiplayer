@@ -8,7 +8,7 @@ namespace Projectiles.SpawningBehaviors.LinesHazard
         [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private ProjectileWithoutDespawn linePrefab;
         [SerializeField] private bool ShouldRotate = false;
-        public override void StartSpawning()
+        public override void StartSpawning(float Duration)
         {
             foreach (Transform spawnpoint in spawnPoints)
             {

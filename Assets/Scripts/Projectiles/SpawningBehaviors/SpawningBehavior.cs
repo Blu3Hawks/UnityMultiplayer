@@ -7,7 +7,7 @@ namespace Projectiles.SpawningBehaviors
     public abstract class SpawningBehavior : NetworkBehaviour
     {
         public event UnityAction<Projectile> OnProjectileSpawned;
-        public abstract void StartSpawning();
+        public abstract void StartSpawning(float Duration);
 
         protected void InvokeProjectileSpawned(Projectile proj) => OnProjectileSpawned?.Invoke(proj);
         #if UNITY_EDITOR
@@ -15,7 +15,7 @@ namespace Projectiles.SpawningBehaviors
         [ContextMenu("Test behavior")]
         public void TestSpawning()
         {
-            StartSpawning();
+            StartSpawning(7);
         }
         
         #endif
