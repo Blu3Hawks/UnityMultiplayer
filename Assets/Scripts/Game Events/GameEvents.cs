@@ -102,8 +102,8 @@ namespace Game_Events {
         public static void Raise(RoundStart e) => OnRoundStarted?.Invoke(e);
         public static void Raise(PlayerDied e) => OnPlayerDied?.Invoke(e);
 
-        public static void Raise(int actorNumber, string name) {
-            OnPlayerJoined?.Invoke(actorNumber, name);
+        public static void Raise(int actorNumber, string playerName) {
+            OnPlayerJoined?.Invoke(actorNumber, playerName);
         }
         public static void Raise(RoundEnd e) => OnRoundEnded?.Invoke(e);
         public static void Raise(MatchEnd e) => OnMatchEnded?.Invoke(e);

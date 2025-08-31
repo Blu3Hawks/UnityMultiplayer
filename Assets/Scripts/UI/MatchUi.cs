@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Game_Events;
 using TMPro;
 using UnityEngine;
@@ -23,15 +24,17 @@ namespace UI {
         private readonly Dictionary<int,ScoreboardRowUI> _rows = new(); // actor -> row
 
         private Coroutine _countdownCo;
+        private Tween _currentTween;
 
         private void OnEnable() {
             GameEvents.OnMatchStarted += OnMatchStarted;
             GameEvents.OnRoundCountdownStarted += OnRoundCountdown;
             GameEvents.OnRoundStarted += OnRoundStarted;
+            GameEvents.OnPlayerJoined += OnPlayerJoined;
             GameEvents.OnPlayerDied += OnPlayerDied;
             GameEvents.OnRoundEnded += OnRoundEnded;
             GameEvents.OnMatchEnded += OnMatchEnded;
-            GameEvents.OnPlayersSynced += OnPlayersSynced;
+            //GameEvents.OnPlayersSynced += OnPlayersSynced;
             GameEvents.OnScoreSet += OnScoreSet;
         }
 
@@ -39,10 +42,11 @@ namespace UI {
             GameEvents.OnMatchStarted -= OnMatchStarted;
             GameEvents.OnRoundCountdownStarted -= OnRoundCountdown;
             GameEvents.OnRoundStarted -= OnRoundStarted;
+            GameEvents.OnPlayerJoined -= OnPlayerJoined;
             GameEvents.OnPlayerDied -= OnPlayerDied;
             GameEvents.OnRoundEnded -= OnRoundEnded;
             GameEvents.OnMatchEnded -= OnMatchEnded;
-            GameEvents.OnPlayersSynced -= OnPlayersSynced;
+            //GameEvents.OnPlayersSynced -= OnPlayersSynced;
             GameEvents.OnScoreSet -= OnScoreSet;
         }
 
@@ -82,14 +86,18 @@ namespace UI {
             PulseBanner("GO!", 1.2f);
         }
 
+        private void OnPlayerJoined(int actorNumber, string playerName) {
+            _names[actorNumber] = playerName;
+            _scores[actorNumber] = 0;
+            RebuildScoreboard();
+        }
+
         private void OnPlayerDied(GameEvents.PlayerDied e) {
             PulseBanner($"{NameOf(e.ActorNumber)} was eliminated", 1f);
-            // If you want a personal “You died”, add a local-check here.
         }
 
         private void OnRoundEnded(GameEvents.RoundEnd e) {
             PulseBanner($"Round Winner: {NameOf(e.WinnerActorNumber)}", 1.8f);
-            // Scores should be updated via ScoreSet from server right after awarding the point.
         }
 
         private void OnMatchEnded(GameEvents.MatchEnd e) {
@@ -128,7 +136,7 @@ namespace UI {
                 r.SetLeader(r == leader);
         }
 
-        private string NameOf(int actor) => _names.TryGetValue(actor, out var n) ? n : $"{actor}";
+        private string NameOf(int actor) => _names.TryGetValue(actor, out var playerName) ? playerName : $"{actor}";
 
         // Countdown/Banner/Kill feed
         private void StartCountdown(float seconds) {
@@ -146,6 +154,13 @@ namespace UI {
         private IEnumerator CoCountdown(float seconds) {
             float t = seconds;
             while (t > 0f) {
+                countdownText.rectTransform.localScale = Vector3.one;
+                _currentTween = countdownText.rectTransform.DOPunchScale(
+                    new Vector3(1f, 1f, 0f),
+                    0.3f,
+                    6,
+                    0.8f
+                );
                 countdownText.text = Mathf.CeilToInt(t).ToString(); 
                 yield return null; 
                 t -= Time.deltaTime;
