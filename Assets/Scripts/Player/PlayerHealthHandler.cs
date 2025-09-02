@@ -15,16 +15,7 @@ namespace Player
         public int Health { get; set; }
 
         public event UnityAction OnDeath;
-
-        private void OnEnable()
-        {
-            Projectile.OnProjectileSpawned += OnPlayerHitSpawnParticles;
-        }
-
-        private void OnDisable()
-        {
-            Projectile.OnProjectileSpawned -= OnPlayerHitSpawnParticles;
-        }
+        
 
         [Rpc(RpcSources.All, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
         public void RPCTakeDamage(int damage)
@@ -49,6 +40,7 @@ namespace Player
 
         public void SpawnEffect(ParticleSystem ps, Transform transform)
         {
+            Debug.Log("SpawnEffect");
             Instantiate(ps, transform.position, Quaternion.identity);
         }
 

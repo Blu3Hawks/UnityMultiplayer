@@ -14,8 +14,11 @@ namespace Projectiles.SpawningBehaviors.LinesHazard
                 {
                     if (HasStateAuthority)
                     {
+                        RpcInvokeOnHit(playerHealthHandler.transform.position);
                         playerHealthHandler.RPCTakeDamage(1);
+                        
                     }
+                    
                 }
             }
         }

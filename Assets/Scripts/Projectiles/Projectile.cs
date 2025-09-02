@@ -21,7 +21,7 @@ namespace Projectiles
 
         private bool _hit = false;
 
-        public static event Action<PlayerHealthHandler, ParticleSystem, Transform> OnProjectileSpawned;
+        public static event UnityAction<Vector3> OnProjectileHit;
 
 
         public override void Spawned()
@@ -66,14 +66,13 @@ namespace Projectiles
                     if (HasStateAuthority)
                     {
                         _hit = true;
+                        RpcInvokeOnHit(playerHealthHandler.transform.position);
                         playerHealthHandler.RPCTakeDamage(10);
-                        Debug.Log("Player hit");
-                        StartCoroutine(DespawnProjectile());
+                        
                     }
                     //spawn the particle system
                     playerHealthHandler.SpawnEffect(_particleSystem, transform);
                     //first - there will be an event that will be called
-                    OnProjectileSpawned?.Invoke(playerHealthHandler, _particleSystem, transform);
                 }
 
 
@@ -90,6 +89,14 @@ namespace Projectiles
             base.Despawned(runner, hasState);
             StopAllCoroutines();
             OnProjectileDespawned?.Invoke(this);
+        }
+
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
+        public void RpcInvokeOnHit(Vector3 playerPosition)
+        {
+            OnProjectileHit?.Invoke(playerPosition);
+            StartCoroutine(DespawnProjectile());
+
         }
     }
 }

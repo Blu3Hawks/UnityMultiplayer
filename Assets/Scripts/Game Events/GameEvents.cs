@@ -109,5 +109,6 @@ namespace Game_Events {
         public static void Raise(MatchEnd e) => OnMatchEnded?.Invoke(e);
         public static void Raise(PlayersSynced e) => OnPlayersSynced?.Invoke(e);
         public static void Raise(ScoreSet e)      => OnScoreSet?.Invoke(e);
+        
     }
 }
