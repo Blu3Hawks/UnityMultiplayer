@@ -153,14 +153,15 @@ namespace UI {
 
         private IEnumerator CoCountdown(float seconds) {
             float t = seconds;
+            _currentTween = countdownText.rectTransform.DOPunchScale(
+                new Vector3(1f, 1f, 0f),
+                0.3f,
+                6,
+                0.8f
+            );
             while (t > 0f) {
                 countdownText.rectTransform.localScale = Vector3.one;
-                _currentTween = countdownText.rectTransform.DOPunchScale(
-                    new Vector3(1f, 1f, 0f),
-                    0.3f,
-                    6,
-                    0.8f
-                );
+                
                 countdownText.text = Mathf.CeilToInt(t).ToString(); 
                 yield return null; 
                 t -= Time.deltaTime;
