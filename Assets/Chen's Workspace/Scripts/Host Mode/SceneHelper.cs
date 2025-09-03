@@ -1,4 +1,5 @@
 using System;
+using Game_Events;
 using Unity.Multiplayer.Playmode;
 using UnityEngine;
 
@@ -20,10 +21,13 @@ public class SceneHelper : MonoBehaviour
                 ClientGameObject.SetActive(false);
             }
         #endif
-        RoomState.OnRoomStarted += () =>
-        {
-            cam.gameObject.SetActive(false);
-            ClientGameObject.SetActive(false);
-        };
+        GameEvents.OnRoomStarted += HandleRoomStarted;
+    }
+
+    private void HandleRoomStarted()
+    {
+        
+        cam.gameObject.SetActive(false);
+        ClientGameObject.SetActive(false);
     }
 }

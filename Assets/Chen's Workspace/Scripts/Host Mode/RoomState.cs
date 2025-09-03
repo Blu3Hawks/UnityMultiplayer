@@ -1,6 +1,7 @@
 using Fusion;
 using System;
 using System.Collections.Generic;
+using Game_Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -82,12 +83,19 @@ public class RoomState : NetworkBehaviour
             GameStarting = true;
             VotingOpen = false;
             Runner.LoadScene("GameReady", LoadSceneMode.Additive);
+            RpcRoomStarted();
         }
         else
         {
             Debug.Log("Not ready yet");
             VotingOpen = true;
         }
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All, HostMode = RpcHostMode.SourceIsServer)]
+    public void RpcRoomStarted()
+    {
+        GameEvents.RaiseRoomStarted();
     }
     public void ServerOnPlayerJoined(int totalClients)
     {

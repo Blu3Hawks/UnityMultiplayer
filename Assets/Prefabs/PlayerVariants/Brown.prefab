@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 8357395575343126311}
     - target: {fileID: 3382591709638159994, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: TotalWords
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3382591709638159994, guid: 43247a3c12fe30c4389bdc7cb4ca34ee, type: 3}
       propertyPath: StateHashes.Array.size

@@ -87,6 +87,8 @@ namespace Game_Events {
 
         // Events
         public static event UnityAction<MatchStart> OnMatchStarted;
+
+        public static event UnityAction OnRoomStarted;
         public static event UnityAction<RoundCountdownStart> OnRoundCountdownStarted;
         public static event UnityAction<RoundStart> OnRoundStarted;
         public static event UnityAction<PlayerDied> OnPlayerDied;
@@ -109,6 +111,9 @@ namespace Game_Events {
         public static void Raise(MatchEnd e) => OnMatchEnded?.Invoke(e);
         public static void Raise(PlayersSynced e) => OnPlayersSynced?.Invoke(e);
         public static void Raise(ScoreSet e)      => OnScoreSet?.Invoke(e);
+        
+        public static void RaiseRoomStarted() => OnRoomStarted?.Invoke();
+        
         
     }
 }
