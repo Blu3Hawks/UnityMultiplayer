@@ -190,7 +190,6 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         amountOfPlayers--;
-
         if (playersInLobby.Contains(player))
             playersInLobby.Remove(player);
 
@@ -334,9 +333,13 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
+        Debug.Log($"Session shutdown reason: {shutdownReason}");
         if (runner.IsServer) onSessionShutdown?.Invoke();
     }
-    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
+    {
+        Debug.Log($"Session disconnected shutdown: {reason}");
+    }
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
