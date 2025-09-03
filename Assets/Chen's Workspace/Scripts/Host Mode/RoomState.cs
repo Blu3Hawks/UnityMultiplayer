@@ -58,7 +58,7 @@ public class RoomState : NetworkBehaviour
             CurrentChanged?.Invoke(null);
         }
     }
-    private void TryStartIfThresholdMet()
+    private void TryStartIfThresholdMet() 
     {
         Debug.Log("Checking if server");
         if (!Runner.IsServer || GameStarting) return;
