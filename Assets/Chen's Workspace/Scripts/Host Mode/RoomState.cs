@@ -74,7 +74,7 @@ public class RoomState : NetworkBehaviour
             Debug.Log("we start the game !");
             GameStarting = true;
             VotingOpen = false;
-            Runner.LoadScene("GameReady");
+            Runner.LoadScene("EmptyScene");
         }
         else
         {
