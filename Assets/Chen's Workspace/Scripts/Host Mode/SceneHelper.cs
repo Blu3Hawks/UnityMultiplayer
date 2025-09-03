@@ -1,4 +1,5 @@
 using System;
+using Unity.Multiplayer.Playmode;
 using UnityEngine;
 
 public class SceneHelper : MonoBehaviour
@@ -11,6 +12,13 @@ public class SceneHelper : MonoBehaviour
         #if UNITY_EDITOR
             HostGameObject.SetActive(false);
             ClientGameObject.SetActive(true);
+            if (CurrentPlayer.ReadOnlyTags().Length > 0 && CurrentPlayer.ReadOnlyTags()[0] == "Server")
+            {
+                Debug.Log("Server");
+                HostGameObject.SetActive(true);
+                ClientGameObject.SetActive(false);
+            }
         #endif
+        
     }
 }
