@@ -40,7 +40,7 @@ public class RoomState : NetworkBehaviour
         var player = info.Source;
         if (ready) _ready.Add(player);
         else _ready.Remove(player);
-
+        Debug.Log("Player clicked ready: " + player.PlayerId + $" {_ready.Count}");
         ReadyCount = _ready.Count;
         TryStartIfThresholdMet();
     }
@@ -60,23 +60,25 @@ public class RoomState : NetworkBehaviour
     }
     private void TryStartIfThresholdMet()
     {
+        Debug.Log("Checking if server");
         if (!Runner.IsServer || GameStarting) return;
 
-        if (TotalClients <= 0) return;
+        // Debug.Log("Checking if clients exists");
+        // if (TotalClients <= 0) return;
 
-        bool ok = requireAllReady
-            ? (ReadyCount >= TotalClients)
-            : (ReadyCount >= Mathf.CeilToInt(TotalClients * readyRatio));
+        Debug.Log("Checking if ready");
+        bool ok = (ReadyCount >= 2);
 
         if (ok)
         {
             Debug.Log("we start the game !");
             GameStarting = true;
             VotingOpen = false;
-            Runner.LoadScene("TestingScene");
+            Runner.LoadScene("GameReady");
         }
         else
         {
+            Debug.Log("Not ready yet");
             VotingOpen = true;
         }
     }

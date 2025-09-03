@@ -47,7 +47,7 @@ public class LobbyManager : MonoBehaviour, INetworkRunnerCallbacks
     public int MaxAmountOfPlayers => maxAmountOfPlayers;
 
     // Scene names
-    public const string GAME_SCENE_NAME = "TestingScene";
+    public const string GAME_SCENE_NAME = "GameReady";
     public const string LOBBY_SCENE_NAME = "MainMenu";
 
     // Static reference

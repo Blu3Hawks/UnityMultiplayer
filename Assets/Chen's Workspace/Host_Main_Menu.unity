@@ -235,7 +235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027562140559462597, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1049898319262330611, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -746,6 +746,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &727148349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 727148351}
+  - component: {fileID: 727148350}
+  m_Layer: 0
+  m_Name: SceneHelper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &727148350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727148349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f43aa90d85d43840bc21706df8cea2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HostGameObject: {fileID: 96812449}
+  ClientGameObject: {fileID: 1318720449}
+--- !u!4 &727148351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727148349}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8252.867, y: -2572.6187, z: -145.44794}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +860,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   readyLabel: {fileID: 1944214876}
   tallyLabel: {fileID: 1394851411}
+--- !u!1 &1318720449 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1027562140559462597, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
+  m_PrefabInstance: {fileID: 1013683978036894574}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1349128780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,7 +1517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1027562140559462597, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1049898319262330611, guid: 4cd196bb6ed2226489a463d0ce861748, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1753,3 +1804,4 @@ SceneRoots:
   - {fileID: 1555857320}
   - {fileID: 54211741}
   - {fileID: 580342245}
+  - {fileID: 727148351}

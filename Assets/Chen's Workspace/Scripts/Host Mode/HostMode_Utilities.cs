@@ -32,7 +32,7 @@ public class HostMode_Utilities : MonoBehaviour
 
             var runner = runnerGO.GetComponent<NetworkRunner>();
             var sceneMgr = runnerGO.GetComponent<NetworkSceneManagerDefault>();
-            runner.ProvideInput = false;
+            runner.ProvideInput = true;
             _networkRunners.Add(runner);
 
             var args = new StartGameArgs
@@ -60,7 +60,7 @@ public class HostMode_Utilities : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"[SERVER] RoomState prefab not assigned; clients won’t have room voting/state.");
+                Debug.LogWarning($"[SERVER] RoomState prefab not assigned; clients wonï¿½t have room voting/state.");
             }
         }
     }
