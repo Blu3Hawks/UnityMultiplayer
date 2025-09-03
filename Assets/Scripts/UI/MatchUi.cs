@@ -34,7 +34,6 @@ namespace UI {
             GameEvents.OnPlayerDied += OnPlayerDied;
             GameEvents.OnRoundEnded += OnRoundEnded;
             GameEvents.OnMatchEnded += OnMatchEnded;
-            //GameEvents.OnPlayersSynced += OnPlayersSynced;
             GameEvents.OnScoreSet += OnScoreSet;
         }
 
@@ -46,21 +45,10 @@ namespace UI {
             GameEvents.OnPlayerDied -= OnPlayerDied;
             GameEvents.OnRoundEnded -= OnRoundEnded;
             GameEvents.OnMatchEnded -= OnMatchEnded;
-            //GameEvents.OnPlayersSynced -= OnPlayersSynced;
             GameEvents.OnScoreSet -= OnScoreSet;
         }
 
         // Event handlers: data
-        private void OnPlayersSynced(GameEvents.PlayersSynced e) {
-            _names.Clear(); 
-            _scores.Clear();
-            foreach (var p in e.Players) {
-                _names[p.ActorNumber] = p.Name; 
-                _scores[p.ActorNumber] = 0;
-            }
-            RebuildScoreboard();
-        }
-
         private void OnScoreSet(GameEvents.ScoreSet e) {
             _scores[e.ActorNumber] = e.Score;
             AddOrUpdateRow(e.ActorNumber);

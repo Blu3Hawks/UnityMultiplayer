@@ -20,8 +20,9 @@ namespace UI {
         }
 
         public void SetLeader(bool isLeader) {
-            if (crownIcon)
-                crownIcon.enabled = true;
+            if (!crownIcon) return;
+            
+            crownIcon.enabled = isLeader;
         }
     }
 }

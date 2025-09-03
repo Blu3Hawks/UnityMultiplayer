@@ -4203,6 +4203,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4402539526123996744, guid: 4b8ebcfe1dfdee94694edca1858920fc, type: 3}
+      propertyPath: scoreboardRowPrefab
+      value: 
+      objectReference: {fileID: 383715994232365463, guid: e0ed2e544b572c8448a44e9a5291edd4, type: 3}
     - target: {fileID: 4612008119943840992, guid: 4b8ebcfe1dfdee94694edca1858920fc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4312,7 +4316,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1151754613009748779, guid: 4b8ebcfe1dfdee94694edca1858920fc, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b8ebcfe1dfdee94694edca1858920fc, type: 3}
