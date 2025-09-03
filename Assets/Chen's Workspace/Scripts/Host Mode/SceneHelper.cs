@@ -6,7 +6,8 @@ public class SceneHelper : MonoBehaviour
 {
     [SerializeField] private GameObject HostGameObject;
     [SerializeField] private GameObject ClientGameObject;
-    
+
+    [SerializeField] private Camera cam;
     private void Awake()
     {
         #if UNITY_EDITOR
@@ -19,6 +20,10 @@ public class SceneHelper : MonoBehaviour
                 ClientGameObject.SetActive(false);
             }
         #endif
-        
+        RoomState.OnRoomStarted += () =>
+        {
+            cam.gameObject.SetActive(false);
+            ClientGameObject.SetActive(false);
+        };
     }
 }

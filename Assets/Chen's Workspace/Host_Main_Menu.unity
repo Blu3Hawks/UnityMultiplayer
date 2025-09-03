@@ -777,6 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostGameObject: {fileID: 96812449}
   ClientGameObject: {fileID: 1318720449}
+  cam: {fileID: 330585545}
 --- !u!4 &727148351
 Transform:
   m_ObjectHideFlags: 0

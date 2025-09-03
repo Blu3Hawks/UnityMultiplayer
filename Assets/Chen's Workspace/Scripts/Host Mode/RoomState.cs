@@ -2,6 +2,8 @@ using Fusion;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class RoomState : NetworkBehaviour
 {
@@ -10,7 +12,11 @@ public class RoomState : NetworkBehaviour
     [Networked] public bool VotingOpen { get; set; }
     [Networked] public bool GameStarting { get; set; }
     public static RoomState Current { get; private set; }
+
+    private Camera oldCam;
     public static event Action<RoomState> CurrentChanged;
+
+    public static event UnityAction OnRoomStarted;
 
     [Header("Voting Settings (server-only)")]
     [SerializeField] public bool requireAllReady = true;
@@ -47,6 +53,7 @@ public class RoomState : NetworkBehaviour
     public override void Spawned()
     {
         Current = this;
+        oldCam = Camera.main;
         CurrentChanged?.Invoke(this);
     }
 
@@ -74,7 +81,7 @@ public class RoomState : NetworkBehaviour
             Debug.Log("we start the game !");
             GameStarting = true;
             VotingOpen = false;
-            Runner.LoadScene("EmptyScene");
+            Runner.LoadScene("GameReady", LoadSceneMode.Additive);
         }
         else
         {
