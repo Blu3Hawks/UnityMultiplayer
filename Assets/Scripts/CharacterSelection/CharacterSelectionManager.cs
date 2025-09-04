@@ -27,6 +27,8 @@ public class CharacterSelectionManager : NetworkBehaviour
     public List<PlayerManager> PlayerManagers => playerManagers;
 
     private NetworkRunner networkRunner;
+    
+    private Vector3 outofbounds = new Vector3(100, 100, 100);
 
     [Networked] private int selectedIndex {get; set;}
 
@@ -67,8 +69,8 @@ public class CharacterSelectionManager : NetworkBehaviour
         }
         takenIndexes.Add(index);
         startingPoints[index].Initialize();
-        Vector3 pos = startingPoints[index].transform.position;
-        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, pos + Vector3.up, Quaternion.identity, info.Source);
+        Vector3 pos = outofbounds;//Teleport out of bounds before game starts
+        NetworkObject spawnedObject = await networkRunner.SpawnAsync(characterList[index].gameObject, pos, Quaternion.identity, info.Source);
         PlayerManager current = spawnedObject.GetComponent<PlayerManager>();
         current.TeleportToPos(pos);
         

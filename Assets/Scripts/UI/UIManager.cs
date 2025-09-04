@@ -64,7 +64,7 @@ namespace UI
         private void UpdateUI()
         {
             Debug.Log(lobbyManager.MaxAmountOfPlayers);
-            amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers} / {lobbyManager.MaxAmountOfPlayers}");
+            amountOfPlayers.SetText($"Current Amount Of Players: {lobbyManager.AmountOfPlayers -1} / {lobbyManager.MaxAmountOfPlayers}");//-1 because of server
         }
 
         private void UpdateSessionList(List<SessionInfo> sessions)

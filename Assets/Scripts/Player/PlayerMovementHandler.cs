@@ -15,6 +15,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     [SerializeField] private float _rotationSpeed;
     private const float MovementThreshold = 0.001f;
 
+    [SerializeField] private float mapSize = 5;//Not optimal but just wanted to add before hand in
     [Header("Gravity Settings")]
     [SerializeField] private float _gravityValue = -9.81f;
     [SerializeField] private float _gravityMultiplier = 1f;
@@ -92,8 +93,9 @@ public class PlayerMovementHandler : NetworkBehaviour
 
     private void PlayerMovement(PlayerInputData data)
     {
+        Vector3 nextPos = transform.position + data.Movementvector * _moveSpeed * Runner.DeltaTime;
+        if (nextPos.x > mapSize || nextPos.x < -mapSize || nextPos.z > mapSize || nextPos.z < -mapSize) return;
         transform.position +=  ( data.Movementvector * _moveSpeed * Runner.DeltaTime);
-        Debug.Log($"{name} movement speed : {data.Movementvector.magnitude}");
         if (Mathf.Abs(data.Movementvector.sqrMagnitude) < MovementThreshold)
         {
             //if the player is not moving, then we don't need to change the animator

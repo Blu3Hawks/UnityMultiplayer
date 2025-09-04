@@ -19,6 +19,9 @@ namespace Projectiles
         private bool shouldSpawn = false;
 
         private Coroutine currentCoroutine;
+
+        private float minDuration = 5f;
+        private float maxDuration = 7f;
         public override void Spawned()
         {
             base.Spawned();
@@ -56,8 +59,9 @@ namespace Projectiles
             while (true)
             {
                 Debug.Log("Spawning");
-                behaviors[Random.Range(0, behaviors.Count)].StartSpawning(7);
-                yield return new WaitForSeconds(7f);
+                float RandomDuration = Random.Range(minDuration, maxDuration);
+                behaviors[Random.Range(0, behaviors.Count)].StartSpawning(RandomDuration);
+                yield return new WaitForSeconds(RandomDuration);
             }
         }
         

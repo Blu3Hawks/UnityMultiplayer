@@ -18,8 +18,13 @@ namespace CharacterSelection
         private List<PlayerManager> playerManagers => characterSelectionManager.PlayerManagers;
 
         private int playersRemaining;
+
+        private Vector3 _outOfBounds = new Vector3(100, 100, 100);
         
-        [SerializeField] private int bestOf = 7;
+        private int bestOf = 7;
+
+        private int minBestOf = 3;
+        private int maxBestOf = 10;
 
         [Networked] public int RoundIndex { get; set; }
 
@@ -29,6 +34,7 @@ namespace CharacterSelection
         {
             if (Runner.IsServer)
             {
+                bestOf = Random.Range(minBestOf, maxBestOf);
                 characterSelectionManager.OnAllPlayersSelected += StartGame;
                 RoundIndex = 0;
             }
@@ -75,7 +81,7 @@ namespace CharacterSelection
         private void HandlePlayerDeath(PlayerManager player)
         {
             player.ToggleControls(false);
-            player.TeleportToPos(new Vector3(100, 100, 100));//Teleport off map
+            player.TeleportToPos(_outOfBounds);//Teleport off map
             livingPlayers.Remove(player);
             RpcPlayerDied(player.Id.GetHashCode());
             if (livingPlayers.Count == 1)
@@ -89,11 +95,6 @@ namespace CharacterSelection
                 livingPlayers.Clear();
                 projectileSpawner.DespawnAll();
                 projectileSpawner.StopSpawning();
-                if (livingPlayers[0].Score >= bestOf)
-                {
-                    RpcMatchEnded(livingPlayers[0].Id.GetHashCode());
-                    return;
-                }
                 StartCoroutine(CountdownNextRound());
             }
 
