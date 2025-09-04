@@ -1,6 +1,7 @@
 using Fusion;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game_Events;
 using UnityEngine;
 using UnityEngine.Events;
@@ -75,7 +76,7 @@ public class RoomState : NetworkBehaviour
         // if (TotalClients <= 0) return;
 
         Debug.Log("Checking if ready");
-        bool ok = (ReadyCount >= 2);
+        bool ok = (ReadyCount >= Runner.ActivePlayers.Count());
 
         if (ok)
         {

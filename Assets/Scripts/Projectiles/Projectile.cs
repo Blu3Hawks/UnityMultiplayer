@@ -71,7 +71,6 @@ namespace Projectiles
                         
                     }
                     //spawn the particle system
-                    playerHealthHandler.SpawnEffect(_particleSystem, transform);
                     //first - there will be an event that will be called
                 }
 
