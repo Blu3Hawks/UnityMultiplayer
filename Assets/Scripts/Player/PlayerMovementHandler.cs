@@ -49,7 +49,7 @@ public class PlayerMovementHandler : NetworkBehaviour
     private void HandlePlayerMovement()
     {
         //if has authority then - 
-        if (Object.HasStateAuthority && _canMove)
+        if (Object.HasStateAuthority || HasInputAuthority && _canMove)
         {
             if (GetInput(out PlayerInputData data))
             {
