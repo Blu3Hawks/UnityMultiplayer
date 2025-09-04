@@ -29,10 +29,12 @@ public class HostMode_Utilities : MonoBehaviour
     {
         foreach (string name in _sessionNames)
         {
-            var runnerGO = Instantiate(_runnerPrefab, transform);
+            var runnerGO = Instantiate(_runnerPrefab);
             runnerGO.name = $"Runner_{name}";
 
             var runner = runnerGO.GetComponent<NetworkRunner>();
+            DontDestroyOnLoad(runner);//Even doing this does not persist the runner after moving scenes, not sure what i did wrong
+            runner.MakeDontDestroyOnLoad(runnerGO);//Or this
             var sceneMgr = runnerGO.GetComponent<NetworkSceneManagerDefault>();
             runner.ProvideInput = true;
             _networkRunners.Add(runner);

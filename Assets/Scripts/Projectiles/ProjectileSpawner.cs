@@ -78,6 +78,10 @@ namespace Projectiles
             {
                 Runner.Despawn(activeProjectiles[i].Object);
             }
+            foreach(SpawningBehavior behavior in behaviors)
+            {
+                behavior.StopSpawning();
+            }
         }
     }
 }

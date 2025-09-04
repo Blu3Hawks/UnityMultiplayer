@@ -29,6 +29,11 @@ namespace Projectiles.SpawningBehaviors.Projectiles
                 yield return new WaitForSeconds(duration / projectilesOverDuration);
             }
         }
-    
+
+        public override void StopSpawning()
+        {
+            base.StopSpawning();
+            StopAllCoroutines();
+        }
     }
 }

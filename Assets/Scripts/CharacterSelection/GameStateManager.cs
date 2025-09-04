@@ -89,6 +89,11 @@ namespace CharacterSelection
                 livingPlayers.Clear();
                 projectileSpawner.DespawnAll();
                 projectileSpawner.StopSpawning();
+                if (livingPlayers[0].Score >= bestOf)
+                {
+                    RpcMatchEnded(livingPlayers[0].Id.GetHashCode());
+                    return;
+                }
                 StartCoroutine(CountdownNextRound());
             }
 

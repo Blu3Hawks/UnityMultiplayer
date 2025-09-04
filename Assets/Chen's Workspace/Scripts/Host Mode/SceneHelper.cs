@@ -22,11 +22,11 @@ public class SceneHelper : MonoBehaviour
             }
         #endif
             
-            #if UNITY_SERVER
-                    Debug.Log("Server");
-                    HostGameObject.SetActive(true);
-                    ClientGameObject.SetActive(false);
-            #endif 
+            // #if UNITY_SERVER
+            //         Debug.Log("Server");
+            //         HostGameObject.SetActive(true);
+            //         ClientGameObject.SetActive(false);
+            // #endif 
         GameEvents.OnRoomStarted += HandleRoomStarted;
     }
 

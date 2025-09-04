@@ -6,12 +6,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovementHandler : NetworkBehaviour
 {
+    private static readonly int IsRunning = Animator.StringToHash("isRunning");
 
 
     [Header("Movement Settings")]
     [SerializeField] private GameObject _playerModel;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotationSpeed;
+    private const float MovementThreshold = 0.001f;
 
     [Header("Gravity Settings")]
     [SerializeField] private float _gravityValue = -9.81f;
@@ -92,41 +94,23 @@ public class PlayerMovementHandler : NetworkBehaviour
     {
         transform.position +=  ( data.Movementvector * _moveSpeed * Runner.DeltaTime);
         Debug.Log($"{name} movement speed : {data.Movementvector.magnitude}");
-        if (Mathf.Abs(data.Movementvector.sqrMagnitude) < 0.001f)
+        if (Mathf.Abs(data.Movementvector.sqrMagnitude) < MovementThreshold)
         {
             //if the player is not moving, then we don't need to change the animator
-            animator.SetBool("isRunning", false);
+            animator.SetBool(IsRunning, false);
         }
         else
         {
-            animator.SetBool("isRunning", true);
+            animator.SetBool(IsRunning, true);
         }
 
-        if (Input.GetKey(KeyCode.G))
-        {
-            //for testing purposes, we can wave
-            StartCoroutine(WavingAnimationCooldown());
-        }
+        
     }
 
-    private IEnumerator WavingAnimationCooldown()
-    {
-        animator.SetBool(_isWaving, true);
-        yield return new WaitForSeconds(0.5f);
-        animator.SetBool(_isWaving, false);
-    }
+    
     private void ApplyGravity()
     {
-        //if we are on the ground, and somehow if the player's velocity is less than 0 by any other... stuff
-        // if (_characterController.isGrounded && _playerGravitationalVelocity < 0f)
-        // {
-        //     _playerGravitationalVelocity = 0f;
-        // }
-        // else
-        // {
-        //     _playerGravitationalVelocity += _gravityValue * _gravityMultiplier * Runner.DeltaTime;
-        // }
-        //apply the velocity properly
+        
         _playerDirection.y = _playerGravitationalVelocity;
     }
 
