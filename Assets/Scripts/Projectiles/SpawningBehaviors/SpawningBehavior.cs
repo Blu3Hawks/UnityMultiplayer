@@ -17,11 +17,11 @@ namespace Projectiles.SpawningBehaviors
         {
             StartSpawning(7);
         }
+        #endif
 
         public virtual void StopSpawning()
         {
             //for specific behaviors that need extra logic when despawning all
         }
-        #endif
     }
 }
